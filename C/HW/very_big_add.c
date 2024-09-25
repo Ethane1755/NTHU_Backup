@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #define MAX_DIGITS 256 
 
 void reverse(char* str) {
@@ -60,8 +59,8 @@ int main(void) {
     int i = 0, k = 0;
 
     while (i < len1 || i < len2 || carry) {
-        int digit1 = (i < len1) ? num11[len1 - 1 - i] - '0' : 0; // Get digit or 0
-        int digit2 = (i < len2) ? num21[len2 - 1 - i] - '0' : 0; // Get digit or 0
+        int digit1 = (i < len1) ? num11[len1 - 1 - i] - '0' : 0; 
+        int digit2 = (i < len2) ? num21[len2 - 1 - i] - '0' : 0; 
         
         int sum = digit1 + digit2 + carry; 
         result[k++] = (sum % 10) + '0'; 
