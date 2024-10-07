@@ -8,4 +8,5 @@ while True:
     money = int(str.split(change)[1])
     balance += money
     print('Now you have', balance, 'dollars.')
+    print('Now you have %d dollars.' %balance)
 

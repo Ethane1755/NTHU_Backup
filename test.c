@@ -1,25 +1,21 @@
 #include <stdio.h>
+#include <string.h>
 
-int main(void) {
-
-    int a, b, c;
-    scanf("%d %d", &a, &b);
-    int number[a];
-    int input[a];
-
-    for (int i = 0; i < a; i++) {
-        number[i] = i + 1;
+int main() {
+    char line[1000];
+    while (fgets(line, sizeof(line), stdin)) {
+        int i = 0;
+        while (line[i] == ';') {
+            line[i] = ' ';
+            i++;
+        }
+        printf("%s", line);
+        int len = strlen(line);
+        if (line[len - 1] == '\n') len--;  
+        if (strncmp(line, "#include", 8) == 0 || line[len - 1] == '{' || (strspn(line, " ;") == len - 1 && line[len - 1] == '}')) {
+            continue;
+        }
+        if (line[len - 1] != '}') printf(";\n");
     }
-
-    for (int i = 0; i < b ; i++) {
-        scanf("%d", &c);
-        input[i] = c;
-    }
-    for (int i = 0; i < a; i++) {
-        if input[i] = 
-    }
-
-
-
     return 0;
 }
