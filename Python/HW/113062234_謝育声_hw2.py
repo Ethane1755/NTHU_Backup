@@ -101,8 +101,6 @@ def exit():
         f.writelines(record_strings)  # Write the records
     print('Thank you. Data saved to records.txt.')
 
-record = []
-balance = 0
 init()
 
 while True:
