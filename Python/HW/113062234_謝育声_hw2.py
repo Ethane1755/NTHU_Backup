@@ -59,13 +59,12 @@ def add(change,record,balance):
 
 
 def view(record, balance):
-    print('Description                Amount')
+    print('\nDescription                Amount')
     print('======================     ======')
     for rec in record:
         print(f"{rec[0]:<26} {rec[1]}")
     print('======================     ======')
-    print(f"Now you have {balance} dollars.")
-
+    print(f"Now you have {balance} dollars.\n")
 
 def delete(de, record, balance):
     task_to_delete = de[0]
