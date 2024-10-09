@@ -1,5 +1,4 @@
 balance = int(input('How much money do you have?')) 
-record = []
 
 
 while True:
