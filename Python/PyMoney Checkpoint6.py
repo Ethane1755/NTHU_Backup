@@ -9,7 +9,7 @@ def check_duplicate(items, a):
             count += 1
             indices.append(i)  # Store the index of the duplicate
     if count > 1:  
-        return False, count, indices
+        return True, count, indices
 
 while True:
     move = input('What do you want to do(add/ delete/ view/ exit).')
@@ -61,5 +61,4 @@ while True:
         break
     else:
         print('Undefined input, please try again.')
-
 
