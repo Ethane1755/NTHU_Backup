@@ -59,38 +59,43 @@ def add(change,record,balance):
 
 
 def view(record, balance):
+    i = 0
     print('\nDescription                Amount')
     print('======================     ======')
     for rec in record:
-        print(f"{rec[0]:<26} {rec[1]}")
+        print(f"{i+1}. {rec[0]:<23} {rec[1]}")
+        i+=1
     print('======================     ======')
     print(f"Now you have {balance} dollars.\n")
 
 def delete(de, record, balance):
-    task_to_delete = de[0]
-    amount_to_delete = int(de[1])
-    duplicate_check, count, indices = check_duplicate(record, (task_to_delete, amount_to_delete))
+    try:
+        task_to_delete = de[0]
+        amount_to_delete = int(de[1])
+        duplicate_check, count, indices = check_duplicate(record, (task_to_delete, amount_to_delete))
         
-    if duplicate_check:
-        print(f"There are {count} instances of this record!")
-        for i, idx in enumerate(indices, 1):
-            print(f"{i}. on line {idx+1}, {record[idx][0]} {record[idx][1]}")
-        ask = int(input('Which one do you want to remove (enter the number)? '))
+        if duplicate_check:
+            print(f"There are {count} instances of this record!")
+            for i, idx in enumerate(indices, 1):
+                print(f"{i}. on line {idx+1}, {record[idx][0]} {record[idx][1]}")
+            ask = int(input('Which one do you want to remove (enter the number)? '))
 
-        if 1 <= ask <= count:
-            index_to_remove = indices[ask - 1]
-            removed_record = record.pop(index_to_remove)
-            balance -= removed_record[1]
-            print(f"Record '{removed_record[0]} {removed_record[1]}' deleted.")
+            if 1 <= ask <= count:
+                index_to_remove = indices[ask - 1]
+                removed_record = record.pop(index_to_remove)
+                balance -= removed_record[1]
+                print(f"Record number {ask} of '{removed_record[0]} {removed_record[1]}' deleted.")
+            else:
+                print("Invalid index selection.")
         else:
-            print("Invalid selection.")
-    else:
-        try:
-            record.remove((task_to_delete, amount_to_delete))
-            balance -= amount_to_delete
-            print(f"Record '{task_to_delete} {amount_to_delete}' deleted.")
-        except ValueError:
-            print("Record not found, please try again.")
+            try:
+                record.remove((task_to_delete, amount_to_delete))
+                balance -= amount_to_delete
+                print(f"Record '{task_to_delete} {amount_to_delete}' deleted.")
+            except ValueError:
+                print("Record not found, please try again.")
+    except IndexError:
+        print(f"Invalid entry\'{de}\', please try again.")
     return balance, record
 
 def exit():
