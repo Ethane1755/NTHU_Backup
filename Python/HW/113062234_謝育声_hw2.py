@@ -25,9 +25,13 @@ def init():
             balance = 0
         record = []  # Initialize an empty record list
     except ValueError:
-        sys.stderr.write("Error reading records. Starting with a clean record.\n")
-        balance = 0
-        record = []
+        try:
+            sys.stderr.write("Error reading records, initializing...\n")
+            balance = int(input('How much money do you have? '))
+        except ValueError:
+            sys.stderr.write("Invalid input for balance. Setting balance to 0.\n")
+            balance = 0
+        record = []  # Initialize an empty record list
 
 def check_duplicate(items, a):
     count = 0
@@ -98,7 +102,7 @@ def delete(de, record, balance):
         print(f"Invalid entry\'{de}\', please try again.")
     return balance, record
 
-def exit():
+def exit_me():
     # Saving the records to 'records.txt' before exiting
     with open('records.txt', 'w') as f:
         f.write(f"{balance}\n")  # Write the balance
@@ -106,10 +110,22 @@ def exit():
         f.writelines(record_strings)  # Write the records
     print('Thank you. Data saved to records.txt.')
 
+def clear(balance, record):
+    tf = input('Are you sure? Please type \'YES\' if you\'re sure to delete your record. ')
+    if tf == 'YES':
+        balance = 0
+        record.clear()
+        open("records.txt", "w").close()
+        print('Processing...')
+        print('Successfully cleared your record, please start again. ')
+    else:
+        print('Thank you for your consideration. ')
+    return balance, record
+
 init()
 
 while True:
-    move = input('What do you want to do (add/view/delete/exit)? ')
+    move = input('What do you want to do (add/view/delete/clear/exit)? ')
     if move == 'add':
         change = str(input('Add some expense or income records with description and amount: ')) 
         balance, record = add(change, record, balance)
@@ -119,8 +135,11 @@ while True:
         de = input('Which record do you want to delete? ').split()
         balance, record = delete(de, record, balance)
     elif move == 'exit':
-        exit()
+        exit_me()
         break
+    elif move == 'clear':
+        clear(balance, record)
+        init()
     else:
-        print('Undefined input, please try again.')
+        print('Undefined input, please try again.\n(add/view/delete/exit) ')
 

@@ -1,8 +1,1 @@
-100
-qwer 678
-asd -34
-sfd -1234
-asd 100
-asdadsad 390
-asd 100
-asd 100
+1000
