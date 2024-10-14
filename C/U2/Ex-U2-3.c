@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    int x = 100;
+    int x = 16;
 
     printf("decimal: %d, hexadecimal: %x\n", x, x);
     printf("decimal: %d, hexadecimal: %#x\n", x, x);

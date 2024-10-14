@@ -32,7 +32,7 @@ def init():
             sys.stderr.write("Invalid input for balance. Setting balance to 0.\n")
             balance = 0
         record = []  # Initialize an empty record list
-
+#check duplicates function
 def check_duplicate(items, a):
     count = 0
     indices = []  # To store the indices of the matching records
@@ -44,8 +44,7 @@ def check_duplicate(items, a):
         return True, count, indices
     else:
         return False, count, indices
-    
-
+#add function 
 def add(change,record,balance):
     # split the diffrent entries
     change = str.split(change,',')
@@ -61,17 +60,16 @@ def add(change,record,balance):
             sys.stderr.write(f"Invalid format in entry: '{entry}'. Input should be in this format: \'breakfast -50\'\nFailed to add record.")
     return balance, record
 
-
 def view(record, balance):
     i = 0
     print('\nDescription                Amount')
     print('======================     ======')
     for rec in record:
-        print(f"{i+1}. {rec[0]:<23} {rec[1]}")
+        print(f"{i+1}. {rec[0]:<23} {rec[1]}") #rec[1] starts from 23 blanks from the start
         i+=1
     print('======================     ======')
     print(f"Now you have {balance} dollars.\n")
-
+#delete function
 def delete(de, record, balance):
     try:
         task_to_delete = de[0]
@@ -101,16 +99,16 @@ def delete(de, record, balance):
     except IndexError:
         print(f"Invalid entry\'{de}\', please try again.")
     return balance, record
-
-def exit_me():
+#exit function
+def exit_me(): #use '_me' to diffrentiate from Python's original function 
     # Saving the records to 'records.txt' before exiting
     with open('records.txt', 'w') as f:
         f.write(f"{balance}\n")  # Write the balance
         record_strings = [f"{task} {amount}\n" for task, amount in record]
         f.writelines(record_strings)  # Write the records
     print('Thank you. Data saved to records.txt.')
-
-def clear(balance, record):
+#clear function
+def clear(balance, record): 
     tf = input('Are you sure? Please type \'YES\' if you\'re sure to delete your record. ')
     if tf == 'YES':
         balance = 0
@@ -122,8 +120,8 @@ def clear(balance, record):
         print('Thank you for your consideration. ')
     return balance, record
 
+#main code
 init()
-
 while True:
     move = input('What do you want to do (add/view/delete/clear/exit)? ')
     if move == 'add':
