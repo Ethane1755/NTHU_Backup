@@ -16,6 +16,7 @@ int main()
   {
     scanf("%d", &num);
     prefix_sum[i] = num + prefix_sum[i - 1];
+    printf("%lld\n",prefix_sum[i]);
   }
 
   scanf("%d", &M);
