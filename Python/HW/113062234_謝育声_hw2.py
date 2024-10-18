@@ -1,5 +1,6 @@
 import sys
 
+#initialize function
 def init():
     global balance, record
     # Load data from records.txt if available
@@ -14,7 +15,6 @@ def init():
             except ValueError:
                 print('Record can\'t be reached! Please inspect records.txt.')
                 exit()
-
     except FileNotFoundError:
     # If the file doesn't exist, prompt the user for the initial balance
         try:
@@ -32,18 +32,7 @@ def init():
             sys.stderr.write("Invalid input for balance. Setting balance to 0.\n")
             balance = 0
         record = []  # Initialize an empty record list
-#check duplicates function
-def check_duplicate(items, a):
-    count = 0
-    indices = []  # To store the indices of the matching records
-    for i, c in enumerate(items):
-        if c == a:
-            count += 1
-            indices.append(i)  # Store the index of the duplicate
-    if count > 1:  
-        return True, count, indices
-    else:
-        return False, count, indices
+
 #add function 
 def add(change,record,balance):
     # split the diffrent entries
@@ -60,15 +49,17 @@ def add(change,record,balance):
             sys.stderr.write(f"Invalid format in entry: '{entry}'. Input should be in this format: \'breakfast -50\'\nFailed to add record.")
     return balance, record
 
+#view function
 def view(record, balance):
     i = 0
     print('\nDescription                Amount')
     print('======================     ======')
     for rec in record:
-        print(f"{i+1}. {rec[0]:<23} {rec[1]}") #rec[1] starts from 23 blanks from the start
+        print(f"{i+1}. {rec[0]:<23} {rec[1]}") #rec[0] appends blanks to fill 23 spaces
         i+=1
     print('======================     ======')
     print(f"Now you have {balance} dollars.\n")
+
 #delete function
 def delete(de, record, balance):
     try:
@@ -99,6 +90,7 @@ def delete(de, record, balance):
     except IndexError:
         print(f"Invalid entry\'{de}\', please try again.")
     return balance, record
+
 #exit function
 def exit_me(): #use '_me' to diffrentiate from Python's original function 
     # Saving the records to 'records.txt' before exiting
@@ -107,6 +99,7 @@ def exit_me(): #use '_me' to diffrentiate from Python's original function
         record_strings = [f"{task} {amount}\n" for task, amount in record]
         f.writelines(record_strings)  # Write the records
     print('Thank you. Data saved to records.txt.')
+
 #clear function
 def clear(balance, record): 
     tf = input('Are you sure? Please type \'YES\' if you\'re sure to delete your record. ')
@@ -119,6 +112,19 @@ def clear(balance, record):
     else:
         print('Thank you for your consideration. ')
     return balance, record
+
+#check duplicates function
+def check_duplicate(items, a):
+    count = 0
+    indices = []  # To store the indices of the matching records
+    for i, c in enumerate(items):
+        if c == a:
+            count += 1
+            indices.append(i)  # Store the index of the duplicate
+    if count > 1:  
+        return True, count, indices
+    else:
+        return False, count, indices
 
 #main code
 init()
