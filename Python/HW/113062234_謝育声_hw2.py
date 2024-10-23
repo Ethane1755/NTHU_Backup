@@ -145,5 +145,5 @@ while True:
         clear(balance, record)
         init()
     else:
-        print('Undefined input, please try again.\n(add/view/delete/exit) ')
+        print('Undefined input, please try again.\n(add/view/delete/clear/exit) ')
 

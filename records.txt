@@ -1,0 +1,4 @@
+805
+breakfast -50
+breakfast -50
+lunch -95
