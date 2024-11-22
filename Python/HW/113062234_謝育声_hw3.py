@@ -1,7 +1,23 @@
 import sys
 
-#initialize function
+def initialize_category():
+    """
+    Initialize the categories
+    """
+    cat = ['expense', 
+           ['food', 
+            ['meal', 'snack', 'drink'], 
+            'transportation', 
+            ['bus', 'railway']], 
+            'income', 
+            ['salary', 'bonus']
+            ]
+    return cat
+
 def init():
+    """
+    Read data from records.txt, or initialize all records if not found
+    """
     global balance, record
     # Load data from records.txt if available
     try:
@@ -11,7 +27,7 @@ def init():
             try:
                 record_lines = f.readlines()  # Read remaining lines (records)
                 record = [tuple(line.strip().split()) for line in record_lines]  # Convert lines to tuples
-                record = [(task, int(amount)) for task, amount in record]  # Convert amounts to integers
+                record = [(cat, task, int(amount)) for cat, task, amount in record]  # Convert amounts to integers
             except ValueError:
                 print('Record can\'t be reached! Please inspect records.txt.')
                 exit()
@@ -33,8 +49,40 @@ def init():
             balance = 0
         record = []  # Initialize an empty record list
 
-# add function 
+def flatten(nested):
+    """
+    Flatten nested lists to a simple list
+    """
+    flat = []
+    def helper(nested):
+        for e in nested:
+            if isinstance(e, list):
+                helper(e)
+            else:
+                k = e
+                flat.append(k)
+    helper(nested)
+    return flat
+
+def is_category_valid(a, b) :
+    """
+    Check if the input category is in the global Categories
+    """
+    cnt = 0
+    categories = flatten(b)
+    for i in categories:
+        if a == i:
+            cnt += 1
+    if cnt == 0:
+        print("Category not in list, please try again.")
+        return 0
+    else:
+        return 1
+
 def add(change,record,balance):
+    """
+    split the input into category, description, and price, and allocate them to their lists
+    """
     # split the diffrent entries
     change = str.split(change,',')
     # split the description and money in each entry
@@ -43,21 +91,26 @@ def add(change,record,balance):
             cat, task, num = entry.split()
             num = int(num)
             balance += num
-            record.append((cat, task, num))  # Append task and amount as a tuple
-            print(f"Record \'{task} {num}\' added.")
+            if (is_category_valid(cat,category)):
+                record.append((cat, task, num))  # Append task and amount as a tuple
+                print(f"Record \'{task} {num}\' added.")
         except ValueError:
-            sys.stderr.write(f"Invalid format in entry: '{entry}'. Input should be in this format: \'breakfast -50\'\nFailed to add record.")
+            sys.stderr.write(f"Invalid format in entry: '{entry}'. Input should be in this format: \'meal breakfast -50\'\nFailed to add record.")
     return balance, record
+
     
 #view function
 def view(record, balance):
+    """
+    print the records
+    """
     i = 0
-    print('\nDescription                Amount')
-    print('======================     ======')
+    print('   Category   Description   Amount')
+    print('  ========== ============= ========')
     for rec in record:
-        print(f"{i+1}. {rec[0]:<23} {rec[1]}") #rec[0] appends blanks to fill 23 spaces
+        print(f"{i+1}. {rec[0]:<11}{rec[1]:<13} {rec[2]}") #rec[0] appends blanks to fill 23 spaces
         i+=1
-    print('======================     ======')
+    print('====================================')
     print(f"Now you have {balance} dollars.\n")
 
 #delete function
@@ -104,17 +157,45 @@ def delete(de, record, balance):
     
     return balance, record
 
-#exit function
+def view_categories(items, level=0):
+    """
+    print the nested list using recursion
+    """
+    for item in items:
+        if isinstance(item, list):
+            view_categories(item, level + 1)
+        else:
+            indentation = ' ' * level * 2 + '- '
+            print('%s%s' % (indentation, item))
+
+def find(cat, inp):
+    """
+    find all that are specified by input
+    """
+    fn = []
+    bal = 0
+    for i in cat:
+        for j in i:
+            if j == inp:
+                fn.append(i)
+                bal += int(i[2])
+    return fn, bal
+
 def exit_me(): #use '_me' to diffrentiate from Python's original function 
+    """
+    Save the records to records.txt, and terminate the program
+    """
     # Saving the records to 'records.txt' before exiting
     with open('records.txt', 'w') as f:
         f.write(f"{balance}\n")  # Write the balance
-        record_strings = [f"{task} {amount}\n" for task, amount in record]
+        record_strings = [f"{cat} {task} {amount}\n" for cat, task, amount in record]
         f.writelines(record_strings)  # Write the records
     print('Thank you. Data saved to records.txt.')
 
-#clear function
 def clear(balance, record): 
+    """
+    Clear all records, will prompt the user to reconsider
+    """
     tf = input('Are you sure? Please type \'YES\' if you\'re sure to delete your record. ')
     if tf == 'YES':
         balance = 0
@@ -129,13 +210,20 @@ def clear(balance, record):
 
 #main code
 init()
+category = initialize_category()
 while True:
-    move = input('What do you want to do (add/view/delete/clear/exit)? ')
+    move = input('What do you want to do (add/view/view categories/delete/clear/exit)? ')
     if move == 'add':
         change = str(input('Add some expense or income records with description and amount: ')) 
         balance, record = add(change, record, balance)
     elif move == 'view':
         view(record, balance)
+    elif move == 'view categories':
+        view_categories(category)
+    elif move == 'find':
+        inp = input('Which category do you want to find? ')
+        fn, bal = find(record, inp)
+        view(fn, bal)
     elif move == 'delete':
         de = input('Which record do you want to delete? ').split()
         balance, record = delete(de, record, balance)
