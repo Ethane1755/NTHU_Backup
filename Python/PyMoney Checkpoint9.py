@@ -168,19 +168,6 @@ def view_categories(items, level=0):
             indentation = ' ' * level * 2 + '- '
             print('%s%s' % (indentation, item))
 
-def find(cat, inp):
-    """
-    find all that are specified by input
-    """
-    fn = []
-    bal = 0
-    for i in cat:
-        for j in i:
-            if j == inp:
-                fn.append(i)
-                bal += int(i[2])
-    return fn, bal
-
 def exit_me(): #use '_me' to diffrentiate from Python's original function 
     """
     Save the records to records.txt, and terminate the program
@@ -206,6 +193,30 @@ def clear(balance, record):
     else:
         print('Thank you for your consideration. ')
     return balance, record
+
+def find(rec, inp):
+    """
+    find all that are specified by input
+    """
+    fn = []
+    bal = 0
+    if inp == 'expense':
+        for i in rec:
+            if i[2] < 0:
+                fn.append(i)
+                bal += int(i[2])
+    elif inp == 'income':
+        for i in rec:
+            if i[2] > 0:
+                fn.append(i)
+                bal += int(i[2])
+    else:
+        for i in rec:
+            for j in i:
+                if j == inp:
+                    fn.append(i)
+                    bal += int(i[2])
+    return fn, bal
 
 
 #main code
