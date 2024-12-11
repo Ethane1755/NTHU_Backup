@@ -1,6 +1,6 @@
-10783
+20833
 meal lunch -100
 meal dinner -150
 meal breakfast -40
 bonus mid_autumn 10000
-meal breakfast -50
+bonus winter 10000

@@ -184,7 +184,6 @@ class Categories:
 
     def find_subcategories(self, category):
         """Find all subcategories of a given category using a generator."""
-        
         def find_subcategories_gen(category, categories, found=False):
             """Recursive generator for finding subcategories."""
             if isinstance(categories, list):  # Recursive case: list of categories
