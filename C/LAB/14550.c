@@ -1,16 +1,18 @@
 #include <stdio.h>
 
-int find (int n) {
-    int k[10001];
-    for (int i = 0; i < n; i++) {
-        k[i] = n*i;
-    }
-    return k;
-}
-
-int jump (int n, int m, int color[], int weight[]) {
+void jump (int n, int m, int color[], int weight[], int k) {
     int c_sum, w_sum;
+    if (k == m) {
+        printf("%d %d\n", &c_sum, &w_sum);
+    } else {
+        for (int i = 1; i <= n; i++) {
+            if (k % i == 0) {
+                
+            }
 
+        }
+
+    }
 
 }
 

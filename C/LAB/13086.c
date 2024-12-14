@@ -2,7 +2,7 @@
 #include <string.h>
 
 void find(int n, int k, char c1[2001], char c2[2001]) {
-    unsigned long long len[60];
+    unsigned long long len[1000];
     len[0] = strlen(c1);
     len[1] = strlen(c2);
 
