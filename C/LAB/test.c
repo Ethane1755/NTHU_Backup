@@ -1,96 +1,59 @@
 #include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include <stdlib.h>
 
-void find(int n, int k, char c1[2001], char c2[2001]) {
-    unsigned long long len[60];
-    len[0] = strlen(c1);
-    len[1] = strlen(c2);
-
-    for (int i = 2; i <= n; i++) {
-        len[i] = len[i-2] + len[i-1];
-    }
-
-    while (n > 1) {
-        if (k < len[n-2]) {
-            n -= 2;
-        } else {
-            k -= len[n-2];
-            n -= 1;
-        }
-    }
-
-    if (n == 0) {
-        printf("%c\n", c1[k]);
-    } else {
-        printf("%c\n", c2[k]);
-    }
-}
-
-// 測試函式
-void test() {
-    char F0[2001] = "abc", F1[2001] = "def";
-    char result;
-
-    // 測試 1: F0 的第 0 個字元
-    {
-        int n = 0, k = 0;
-        result = F0[k];
-        printf("Expected: %c, ", result);
-        find(n, k, F0, F1);
-    }
-
-    // 測試 2: F1 的第 0 個字元
-    {
-        int n = 1, k = 0;
-        result = F1[k];
-        printf("Expected: %c, ", result);
-        find(n, k, F0, F1);
-    }
-
-    // 測試 3: F2 的第 5 個字元
-    {
-        int n = 2, k = 5;
-        char F2[2001];
-        sprintf(F2, "%s%s", F0, F1); // 生成 F2 = "abcdef"
-        result = F2[k];
-        printf("Expected: %c, ", result);
-        find(n, k, F0, F1);
-    }
-
-    // 測試 4: F3 的第 8 個字元
-    {
-        int n = 3, k = 8;
-        char F2[2001], F3[4001];
-        sprintf(F2, "%s%s", F0, F1); // F2 = "abcdef"
-        sprintf(F3, "%s%s", F1, F2); // F3 = "defabcdef"
-        result = F3[k];
-        printf("Expected: %c, ", result);
-        find(n, k, F0, F1);
-    }
-
-    // 測試 5: F4 的第 7 個字元
-    {
-        int n = 4, k = 7;
-        char F2[2001], F3[4001], F4[6001];
-        sprintf(F2, "%s%s", F0, F1); // F2 = "abcdef"
-        sprintf(F3, "%s%s", F1, F2); // F3 = "defabcdef"
-        sprintf(F4, "%s%s", F2, F3); // F4 = "abcdefdefabcdef"
-        result = F4[k];
-        printf("Expected: %c, ", result);
-        find(n, k, F0, F1);
-    }
-
-    // 更多測試 (可擴展)
-    {
-        // 測試極限條件
-        int n = 59, k = 0;
-        printf("Testing extreme case with n = %d and k = %d\n", n, k);
-        find(n, k, F0, F1);
-    }
-}
+#define MAX_N 100000
+#define MAX_COLOR 7
 
 int main() {
-    test(); // 執行測試
+    int N, Q;
+    scanf("%d %d", &N, &Q);
+
+    int colors[MAX_N + 1];
+    int weights[MAX_N + 1];
+    int max_distinct_colors[MAX_N + 1];
+    int max_weight[MAX_N + 1];
+
+    // Read colors and weights
+    for (int i = 1; i <= N; i++) {
+        scanf("%d", &colors[i]);
+    }
+    for (int i = 1; i <= N; i++) {
+        scanf("%d", &weights[i]);
+    }
+
+    // Precompute results for all positions
+    for (int i = 1; i <= N; i++) {
+        int color_count[MAX_COLOR + 1] = {0}; // To count distinct colors
+        int total_weight = 0;
+
+        // Collect gems from multiples of i
+        for (int j = i; j <= N; j += i) {
+            int color = colors[j];
+            if (color_count[color] == 0) { // New color found
+                color_count[color] = weights[j];
+                total_weight += weights[j];
+            } else { // Existing color, add weight only if it's not already counted
+                total_weight += weights[j]; // Add weight for existing color
+            }
+        }
+
+        // Count distinct colors
+        max_distinct_colors[i] = 0;
+        for (int c = 1; c <= MAX_COLOR; c++) {
+            if (color_count[c] > 0) {
+                max_distinct_colors[i]++;
+            }
+        }
+        
+        max_weight[i] = total_weight;
+    }
+
+    // Answering queries
+    for (int k = 0; k < Q; k++) {
+        int m;
+        scanf("%d", &m);
+        printf("%d %d\n", max_distinct_colors[m], max_weight[m]);
+    }
+
     return 0;
 }

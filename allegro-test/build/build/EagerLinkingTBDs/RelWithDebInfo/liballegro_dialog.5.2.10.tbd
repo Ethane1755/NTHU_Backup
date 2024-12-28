@@ -1,0 +1,115 @@
+{
+  "main_library": {
+    "compatibility_versions": [
+      {
+        "version": "5.2"
+      }
+    ],
+    "current_versions": [
+      {
+        "version": "5.2.10"
+      }
+    ],
+    "exported_symbols": [
+      {
+        "data": {
+          "objc_class": [
+            "ALLEGLogView",
+            "ALLEGTargetManager",
+            "ALLEGMenuTarget"
+          ],
+          "objc_ivar": [
+            "ALLEGMenuTarget.amenu",
+            "ALLEGMenuTarget._hasAppMenu",
+            "ALLEGTargetManager._items",
+            "ALLEGLogView.textlog",
+            "ALLEGMenuTarget._menu",
+            "ALLEGMenuTarget.lock"
+          ]
+        },
+        "text": {
+          "global": [
+            "_al_get_display_menu",
+            "_al_get_native_file_dialog_path",
+            "_al_find_menu_item",
+            "_al_shutdown_native_dialog_addon",
+            "__al_get_menu_display_height",
+            "__al_init_popup_menu",
+            "__al_find_menu_item_unique",
+            "__al_find_parent_menu_by_id",
+            "__al_show_display_menu",
+            "_al_is_native_dialog_addon_initialized",
+            "__al_show_native_message_box",
+            "_al_append_menu_item",
+            "_al_get_allegro_native_dialog_version",
+            "__al_walk_over_menu",
+            "__al_hide_display_menu",
+            "_al_get_native_text_log_event_source",
+            "_al_set_menu_item_caption",
+            "__al_destroy_menu_item_at",
+            "__al_update_menu_item_at",
+            "__al_append_native_text_log",
+            "__al_init_menu",
+            "__al_close_native_text_log",
+            "_al_enable_menu_event_source",
+            "_al_set_menu_item_icon",
+            "__al_open_native_text_log",
+            "__al_show_popup_menu",
+            "_al_create_popup_menu",
+            "_al_destroy_native_file_dialog",
+            "_al_clone_menu",
+            "_al_popup_menu",
+            "_al_set_display_menu",
+            "_al_show_native_message_box",
+            "_al_create_native_file_dialog",
+            "_al_get_native_file_dialog_count",
+            "_al_open_native_text_log",
+            "_al_toggle_menu_item_flags",
+            "__al_insert_menu_item_at",
+            "_al_close_native_text_log",
+            "_al_remove_menu_item",
+            "__al_show_native_file_dialog",
+            "_al_get_default_menu_event_source",
+            "_al_show_native_file_dialog",
+            "_al_init_native_dialog_addon",
+            "_al_disable_menu_event_source",
+            "_al_append_native_text_log",
+            "_al_build_menu",
+            "__al_emit_menu_event",
+            "_al_remove_display_menu",
+            "_al_destroy_menu",
+            "_al_find_menu",
+            "_al_set_menu_item_flags",
+            "_al_get_menu_item_caption",
+            "__al_shutdown_native_dialog_addon",
+            "_al_create_menu",
+            "__al_init_native_dialog_addon",
+            "_al_clone_menu_for_popup",
+            "_al_get_menu_item_icon",
+            "_al_get_menu_item_flags",
+            "_al_insert_menu_item"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/liballegro_dialog.5.2.dylib"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "15.1",
+        "target": "arm64-macos"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

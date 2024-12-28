@@ -1,0 +1,134 @@
+{
+  "main_library": {
+    "compatibility_versions": [
+      {
+        "version": "5.2"
+      }
+    ],
+    "current_versions": [
+      {
+        "version": "5.2.10"
+      }
+    ],
+    "exported_symbols": [
+      {
+        "text": {
+          "global": [
+            "__al_draw_prim_indexed_soft",
+            "__al_lock_vertex_buffer_opengl",
+            "_al_draw_filled_rounded_rectangle",
+            "__al_create_index_buffer_directx",
+            "_al_create_index_buffer",
+            "_al_draw_circle",
+            "__al_draw_prim_indexed_directx",
+            "__al_prim_cache_push_triangle",
+            "_al_draw_soft_triangle",
+            "__al_prim_cache_init",
+            "_al_draw_filled_circle",
+            "__al_unlock_index_buffer_directx",
+            "_al_draw_ellipse",
+            "__al_destroy_index_buffer_opengl",
+            "_al_calculate_spline",
+            "__al_prim_cache_push_point",
+            "_al_draw_spline",
+            "__al_prim_is_point_in_triangle",
+            "_al_unlock_vertex_buffer",
+            "__al_bitmap_region_is_locked",
+            "__al_init_d3d_driver",
+            "__al_point_2d",
+            "_al_draw_triangle",
+            "_al_calculate_ribbon",
+            "_al_get_vertex_buffer_size",
+            "__al_set_d3d_decl",
+            "_al_create_vertex_decl",
+            "_al_draw_polygon",
+            "__al_destroy_vertex_buffer_opengl",
+            "__al_unlock_index_buffer_opengl",
+            "__al_unlock_vertex_buffer_opengl",
+            "__al_fix_texcoord",
+            "__al_prim_intersect_segment",
+            "_al_draw_filled_triangle",
+            "_al_draw_prim",
+            "__al_prim_get_scale",
+            "_al_draw_elliptical_arc",
+            "_al_draw_rectangle",
+            "_al_is_primitives_addon_initialized",
+            "_al_lock_index_buffer",
+            "_al_unlock_index_buffer",
+            "__al_draw_prim_opengl",
+            "__al_lock_index_buffer_opengl",
+            "__al_shutdown_d3d_driver",
+            "__al_prim_normalize",
+            "__al_draw_vertex_buffer_opengl",
+            "_al_draw_filled_pieslice",
+            "_al_draw_filled_ellipse",
+            "_al_draw_line",
+            "_al_draw_pieslice",
+            "_al_destroy_index_buffer",
+            "_al_draw_filled_polygon_with_holes",
+            "__al_destroy_vertex_buffer_directx",
+            "_al_triangulate_polygon",
+            "_al_draw_soft_line",
+            "_al_get_index_buffer_size",
+            "__al_create_vertex_buffer_directx",
+            "__al_draw_prim_directx",
+            "__al_prim_cache_init_ex",
+            "_al_draw_arc",
+            "_al_destroy_vertex_buffer",
+            "__al_draw_buffer_common_soft",
+            "__al_draw_prim_soft",
+            "__al_prim_cache_flush",
+            "_al_draw_filled_polygon",
+            "__al_create_vertex_buffer_opengl",
+            "_al_draw_ribbon",
+            "__al_create_index_buffer_opengl",
+            "_al_draw_indexed_prim",
+            "_al_draw_rounded_rectangle",
+            "_al_shutdown_primitives_addon",
+            "_al_draw_filled_rectangle",
+            "_al_calculate_arc",
+            "__al_unlock_vertex_buffer_directx",
+            "_al_init_primitives_addon",
+            "_al_draw_polyline",
+            "__al_lock_index_buffer_directx",
+            "_al_create_vertex_buffer",
+            "_al_lock_vertex_buffer",
+            "__al_lock_vertex_buffer_directx",
+            "__al_draw_vertex_buffer_directx",
+            "__al_draw_indexed_buffer_opengl",
+            "_al_draw_indexed_buffer",
+            "__al_draw_prim_indexed_opengl",
+            "_al_destroy_vertex_decl",
+            "_al_draw_vertex_buffer",
+            "__al_destroy_index_buffer_directx",
+            "__al_prim_cache_term",
+            "__al_prim_test_line_side",
+            "__al_line_2d",
+            "__al_prim_are_points_equal",
+            "_al_get_allegro_primitives_version",
+            "__al_draw_indexed_buffer_directx"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/liballegro_primitives.5.2.dylib"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "15.1",
+        "target": "arm64-macos"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

@@ -1,34 +1,60 @@
 #include <stdio.h>
 
-void jump (int n, int m, int color[], int weight[], int k) {
-    int c_sum, w_sum;
-    if (k == m) {
-        printf("%d %d\n", &c_sum, &w_sum);
-    } else {
-        for (int i = 1; i <= n; i++) {
-            if (k % i == 0) {
-                
-            }
+int n, m, q;
+int color[100000+10];
+int weight[100000+10];
+int ans_color[100000+10];
+int ans_weight[100000+10];
+int now_color;
+int now_weight;
+int take[7];
 
-        }
-
-    }
-
+int max (int a, int b) {
+    return (a > b ? a : b);
 }
 
-int main () {
-    int n, q, m;
-    scanf("%d %d", &n, &q);
-    int color[10001], weight[10001];
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &color[i]);
+void dfs (int dot) {
+    int r = take[color[dot]];
+    int r_color = now_color;
+    int r_weight = now_weight;
+
+    if (take[color[dot]] == 0) {
+        now_color++;
+        take[color[dot]] = weight[dot];
+        now_weight += weight[dot];
+    } else {
+        now_weight = max(now_weight, now_weight - take[color[dot]] + weight[dot]);
+        take[color[dot]] = max(take[color[dot]], weight[dot]);
     }
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &weight[i]);
+
+    if (ans_color[dot] < now_color) {
+        ans_color[dot] = now_color;
+        ans_weight[dot] = now_weight;
+    } else if (ans_color[dot] == now_color) {
+        ans_weight[dot] = max(now_weight, ans_weight[dot]);
     }
-    for (int i = 0; i < q; i++)
-    {
-        scanf("%d", &m);
+
+    for (int i = 2; i * dot < n; i++) {
+        dfs(i * dot);
     }
-    return 0;
+
+    take[color[dot]] = r;
+    now_color = r_color;
+    now_weight = r_weight;
+}
+
+int main(){
+    scanf("%d %d",&n,&q);
+    for(int i=1;i<=n;i++){
+        scanf("%d",&color[i]);
+        color[i]--;
+    }
+    for(int i=1;i<=n;i++){
+        scanf("%d",&weight[i]);
+    }
+    dfs(1);
+    for(int i=1;i<=q;i++){
+        scanf("%d",&m);
+        printf("%d %d\n",ans_color[m],ans_weight[m]);
+    }
 }

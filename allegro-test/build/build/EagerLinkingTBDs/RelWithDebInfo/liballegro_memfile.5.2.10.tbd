@@ -1,0 +1,43 @@
+{
+  "main_library": {
+    "compatibility_versions": [
+      {
+        "version": "5.2"
+      }
+    ],
+    "current_versions": [
+      {
+        "version": "5.2.10"
+      }
+    ],
+    "exported_symbols": [
+      {
+        "text": {
+          "global": [
+            "_al_open_memfile",
+            "_al_get_allegro_memfile_version"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/liballegro_memfile.5.2.dylib"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "15.1",
+        "target": "arm64-macos"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}

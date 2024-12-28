@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+if test "$CONFIGURATION" = "RelWithDebInfo"; then :
+  cd /Users/ethanehsieh/documents/CODE/allegro-test/build/tests
+  /Users/ethanehsieh/documents/CODE/allegro-test/build/tests/RelWithDebInfo/test_list
+fi
+

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void find(int n, int k, char c1[2001], char c2[2001]) {
+void find(long long n, long long k, char c1[2001], char c2[2001]) {
     unsigned long long len[1000];
     len[0] = strlen(c1);
     len[1] = strlen(c2);
@@ -31,9 +31,9 @@ int main() {
     scanf("%d", &T);
     while (T--) {
         char F0[2001], F1[2001];
-        int n, k;
+        long long n, k;
         scanf("%s %s", F0, F1);
-        scanf("%d %d", &n, &k);
+        scanf("%lld %lld", &n, &k);
         find(n, k, F0, F1);
     }
     return 0;

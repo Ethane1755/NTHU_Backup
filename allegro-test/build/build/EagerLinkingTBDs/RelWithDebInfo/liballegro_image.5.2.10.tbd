@@ -1,0 +1,77 @@
+{
+  "main_library": {
+    "compatibility_versions": [
+      {
+        "version": "5.2"
+      }
+    ],
+    "current_versions": [
+      {
+        "version": "5.2.10"
+      }
+    ],
+    "exported_symbols": [
+      {
+        "text": {
+          "global": [
+            "__al_load_tga",
+            "__al_osx_save_jpg_f",
+            "__al_osx_save_tif_f",
+            "__al_identify_png",
+            "__al_load_webp",
+            "__al_save_pcx_f",
+            "__al_osx_save_image_f",
+            "__al_load_tga_f",
+            "_al_is_image_addon_initialized",
+            "__al_save_bmp",
+            "__al_load_dds_f",
+            "__al_identify_bmp",
+            "__al_load_pcx_f",
+            "__al_save_webp_f",
+            "__al_load_webp_f",
+            "__al_identify_dds",
+            "__al_save_tga",
+            "__al_identify_tga",
+            "__al_load_pcx",
+            "__al_osx_register_image_loader",
+            "__al_identify_pcx",
+            "__al_load_bmp_f",
+            "__al_osx_save_image",
+            "__al_identify_webp",
+            "__al_save_tga_f",
+            "__al_identify_jpg",
+            "__al_osx_save_gif_f",
+            "__al_save_pcx",
+            "__al_load_dds",
+            "_al_get_allegro_image_version",
+            "_al_init_image_addon",
+            "__al_load_bmp",
+            "_al_shutdown_image_addon",
+            "__al_save_bmp_f",
+            "__al_save_webp",
+            "__al_osx_save_png_f"
+          ]
+        }
+      }
+    ],
+    "flags": [
+      {
+        "attributes": [
+          "not_app_extension_safe"
+        ]
+      }
+    ],
+    "install_names": [
+      {
+        "name": "@rpath/liballegro_image.5.2.dylib"
+      }
+    ],
+    "target_info": [
+      {
+        "min_deployment": "15.1",
+        "target": "arm64-macos"
+      }
+    ]
+  },
+  "tapi_tbd_version": 5
+}
