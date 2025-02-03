@@ -1,35 +1,41 @@
 #include <stdio.h>
 
-// 遞迴查找 sk[a] 對應的字符
-char find(int a, int L) {
-    int prevL = (L - 3) / 2; // sk-1 的長度
+long long length[51];
+
+void init_length() {
+    length[1] = 3;
+    for (int i = 2; i <= 50; i++) {
+        length[i] = 2 * length[i - 1] + 3;
+    }
+}
+
+char find(int k, long long a) {
+    if (k == 1) {
+        return "OuQ"[a];  
+    }
+
+    long long prevL = length[k - 1];
 
     if (a == 0) return 'O';
     if (a == prevL + 1) return 'u';
-    if (a == L - 1) return 'Q';
+    if (a == 2 * prevL + 2) return 'Q';
 
     if (a <= prevL) {
-        return find(a - 1, prevL);  // 屬於左邊 sk-1
+        return find(k - 1, a - 1);  
     } else {
-        return find(a - prevL - 2, prevL); // 屬於右邊 sk-1
+        return find(k - 1, a - prevL - 2); 
     }
 }
 
 int main() {
+    init_length();
     int k, l, r;
-    
-    while(scanf("%d %d %d", &k, &l, &r) != EOF) {
-        // 正確計算 sk 的長度
-        int L = 3;
-        for (int i = 2; i <= k; i++) {
-            L = 2 * L + 3;
-        }
-
-        // 查找並輸出區間 [l, r]
+    scanf("%d %d %d", &k, &l, &r);
         for (int i = l; i <= r; i++) {
-            printf("%c", find(i, L));
+            printf("%c", find(k, i));
         }
         printf("\n");
-    }
+    
+
     return 0;
 }
