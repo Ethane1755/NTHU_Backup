@@ -1,4 +1,3 @@
-805
-breakfast -50
-breakfast -50
-lunch -95
+3890
+salary 2024 3900
+transport bus -10

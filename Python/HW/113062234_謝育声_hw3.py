@@ -164,7 +164,7 @@ class Categories:
     def __init__(self):
         self._categories = [
             'expense',
-            ['food', ['meal', 'snack', 'drink'], 'transportation', ['bus', 'railway']],
+            ['food', ['meal', 'snack', 'drink'], 'transport', ['bus', 'railway']],
             'income', ['salary', 'bonus']
         ]
 
