@@ -41,7 +41,6 @@ def check_duplicate(items, a):
     else:
         return False, count, indices
     
-
 def add(change,record,balance):
     # split the diffrent entries
     change = str.split(change,',')
@@ -121,4 +120,3 @@ while True:
         break
     else:
         print('Undefined input, please try again.')
-
