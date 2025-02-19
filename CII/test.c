@@ -1,41 +1,19 @@
 #include <stdio.h>
 
-long long length[51];
-
-void init_length() {
-    length[1] = 3;
-    for (int i = 2; i <= 50; i++) {
-        length[i] = 2 * length[i - 1] + 3;
-    }
-}
-
-char find(int k, long long a) {
-    if (k == 1) {
-        return "OuQ"[a];  
-    }
-
-    long long prevL = length[k - 1];
-
-    if (a == 0) return 'O';
-    if (a == prevL + 1) return 'u';
-    if (a == 2 * prevL + 2) return 'Q';
-
-    if (a <= prevL) {
-        return find(k - 1, a - 1);  
-    } else {
-        return find(k - 1, a - prevL - 2); 
-    }
-}
-
 int main() {
-    init_length();
-    int k, l, r;
-    scanf("%d %d %d", &k, &l, &r);
-        for (int i = l; i <= r; i++) {
-            printf("%c", find(k, i));
+    char hello[5][5];
+
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            scanf(" %c", &hello[i][j]);
+        }
+    }
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("%c ", hello[i][j]);
         }
         printf("\n");
-    
+    }
 
     return 0;
 }
