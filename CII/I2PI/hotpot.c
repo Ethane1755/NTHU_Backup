@@ -1,12 +1,16 @@
 #include <stdio.h>
+#include <math.h>
 
-int main () {
-    int a1, a2, b1, b2, c;
-    scanf("%d.%d %d.%d d", &a1, &a2, &b1, &b2, &c);
-    int ans1 = a1 * b1 * 10000;
-    int ans2 = a2 * b2 + a1 * b2 * 100 + a2 * b1 * 100;
-    int a = ans1 + ans2;
-    printf("%d.%0d", a / 10000, a % 10000);
+int main() {
+    double x, y;
+    int z;
+    scanf("%lf %lf %d", &x, &y, &z);
+
+    double result = x * y;  
+
+    double rounded = round(result * pow(10, z)) / pow(10, z);
+
+    printf("%.*f\n", z, rounded);
 
     return 0;
 }
