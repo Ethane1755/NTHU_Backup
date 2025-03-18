@@ -1,82 +1,80 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct _Node {
-    char chr;
-    struct _Node* next;
+typedef struct _Node{
+    char content;
     struct _Node* prev;
-} Node;
+    struct _Node* next;
+}Node;
 
-void backspace(Node** nodeptr) {
-    Node* CurNode = (*nodeptr);
-    if (CurNode -> prev == NULL) return;
-    if (CurNode -> next == NULL) {
-        (*nodeptr) = CurNode -> prev;
-        (*nodeptr) -> next = NULL;
-        free(CurNode);
-    }
-    else {
-        CurNode -> prev -> next = CurNode -> next;
-        CurNode -> next -> prev = CurNode -> prev;
-        (*nodeptr) = CurNode -> prev;
-        free(CurNode);
-    }
-}
+void delete(Node** ptr) {
+    Node* current = (*ptr);
+    if (current->prev == NULL) return; 
 
-void insert(Node** nodeptr, char input) {
-    Node* CurNode = (*nodeptr);
-    Node* NewNode = (Node*)malloc(sizeof(Node));
-    NewNode -> chr = input;
-    NewNode -> prev = CurNode;
-    NewNode -> next = CurNode -> next;
-
-    if (CurNode -> next != NULL) {
-        CurNode -> next -> prev = NewNode;
+    if (current->next != NULL) {
+        current->next->prev = current->prev;
     }
-    CurNode -> next = NewNode;
-    (*nodeptr) = NewNode;
+    current->prev->next = current->next;
+
+    Node* temp = current->prev;
+    free(current);
+    *ptr = temp;
 }
 
 void print(Node* head) {
-    Node* CurNode = head -> next;
-    while (CurNode != NULL) {
-        printf("%c", CurNode -> chr);
-        Node* temp = CurNode;
-        CurNode = CurNode -> next;
+    Node* cur = head->next;
+    while (cur!= NULL) {
+        printf("%c", cur->content);
+        Node* temp = cur;
+        cur = cur->next;
         free(temp);
     }
-    free(head);
     printf("\n");
+    free(head);
 }
 
+void insert(Node** ptr, char input) {
+    Node* current = (*ptr);
+    Node* NewNode = (Node*)malloc(sizeof(Node));
+    NewNode->content = input;
+    NewNode->next = current->next;
+    NewNode->prev = current;
+    if (current->next != NULL) {
+        current->next->prev = NewNode;
+    }
+    current->next = NewNode;
+    (*ptr) = NewNode;
+}
+
+
 int main() {
-    int T;
+    int T, N;
     scanf("%d", &T);
     while(T--) {
         Node* head = (Node*)malloc(sizeof(Node));
-        head -> prev = NULL;
-        head -> next = NULL;
-        Node* CurNode = head;
-        int N;
+        head->prev = NULL;
+        head->next = NULL;
+        Node* ptr = head;
         scanf("%d", &N);
         getchar();
         while(N--) {
-            char input = getchar();
-            if (input == 'L') {
-                if (CurNode -> prev != NULL) {
-                    CurNode = CurNode -> prev;
+            char input;
+            scanf(" %c", &input);
+            if (input == 'R') {
+                if (ptr->next != NULL) {
+                    ptr = ptr->next;
                 }
-            } else if (input == 'R') {
-                if (CurNode -> next != NULL) {
-                    CurNode = CurNode -> next;
+            } else if (input == 'L') {
+                if (ptr->prev != NULL) {
+                    ptr = ptr->prev;
                 }
             } else if (input == 'B') {
-                backspace(&CurNode);
+                delete(&ptr);
             } else {
-                insert(&CurNode, input);
+                insert(&ptr, input);
             }
         }
-        print(head);
+       print(head);
     }
     return 0;
 }
