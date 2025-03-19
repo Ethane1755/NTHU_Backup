@@ -1,18 +1,16 @@
 #ifndef FUNC_H_INCLUDED
 #define FUNC_H_INCLUDED
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 typedef struct _Node{
     int number, age;
     struct _Node* prev;
     struct _Node* next;
-} Node;
+}Node;
 
 Node* head;
-Node* age_list[5000001];
+Node* order[5000001];
 
 int cmp(const void* a, const void* b) {
     Node* A = *(Node**) a;
@@ -21,69 +19,52 @@ int cmp(const void* a, const void* b) {
     else return A->number - B->number;
 }
 
-Node* createList(int n) {
-    Node* list = (Node*) malloc(sizeof(Node) * n);
-
+Node* createList(int n){
+    Node* NewNode = (Node*)malloc(sizeof(Node) * n);
     for (int i = 0; i < n; i++) {
-        list[i].number = i + 1;
-        scanf("%d", &list[i].age);
-
-        // record the Node*
-        age_list[i] = &list[i];
-
-        // connect the circular linked list
-        if (i != n-1) list[i].next = &list[i+1];
-        else list[i].next = &list[0];
-        if (i != 0) list[i].prev = &list[i-1];
-        else list[i].prev = &list[n-1];
+        scanf(" %d", &NewNode[i].age);
+        NewNode[i].number = i + 1;
+        order[i] = &NewNode[i];
+        if (i == 0) NewNode[i].prev = &NewNode[n - 1];
+        else NewNode[i].prev = &NewNode[i - 1];
+        if (i == n - 1) NewNode[i].next = &NewNode[0];
+        else NewNode[i].next = &NewNode[i + 1];
     }
-
-    // sort the Node* array
-    qsort(age_list, n, sizeof(Node*), cmp);
-
-    return list;
+    qsort(order, n, sizeof(Node*), cmp);
+    return NewNode;
 }
-
 Node* solve(int n, int m) {
-	int a, k;
-	char dir;
-	while (m--) {
-        scanf("%d %d %c", &a, &k, &dir);
+    int a, b;
+    char c;
+    while(m--){
+        scanf("%d %d %c", &a, &b, &c);
         a--;
-        k %= (n-1);
-        if (k == 0) continue;
+        b %= (n - 1);
+        if (b == 0) continue;
 
-        // take the target node out of the linked list
-        Node* flag = age_list[a];
-        Node* next = age_list[a]->next;
-        Node* pre = age_list[a]->prev;
-        pre->next = next;
-        next->prev = pre;
+        Node* cur = order[a];
+        Node* next = order[a]->next;
+        Node* pre = order[a]->prev;
+        next -> prev = pre;
+        pre -> next = next;
 
-        // search the position
-        if (dir == 'R') {
-            while (k--) {
-                pre = pre->next;
-                next = next->next;
+        if (c == 'R') {
+            while(b--) {
+                pre = pre -> next;
+                next = next -> next;
+            }
+        } else {
+            while(b--){
+                pre = pre -> prev;
+                next = next -> prev;
             }
         }
-        else {
-            while (k--) {
-                pre = pre->prev;
-                next = next->prev;
-            }
-        }
-
-        // insert the node back to the linked list
-        pre->next = flag;
-        flag->prev = pre;
-        flag->next = next;
-        next->prev = flag;
+        pre -> next = cur;
+        next -> prev = cur;
+        cur -> next = next;
+        cur -> prev = pre;
     }
-
-    return age_list[0];
+    return order[0];
 }
 
 #endif
-
-// By Utin
