@@ -1,83 +1,107 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include "12680.h"
 
-typedef struct BTNode {
-    char c;
-    struct BTNode* left;
-    struct BTNode* right;
-} BTNode;
-
-// 修正 createNode()，避免 switch 覆蓋
-BTNode* createNode(char input) {
-    BTNode* newNode = (BTNode*)malloc(sizeof(BTNode));
-    newNode->c = input;
-    newNode->left = newNode->right = NULL;
-    return newNode;
-}
-
-// 修正 parseExpression，避免無窮遞迴
-BTNode* parseExpression(const char** expr) {
-    if (**expr == '\0') return NULL;  // 避免超出字串範圍
-    char c = **expr;
-    (*expr)++;  // 推進指標，確保不會無窮迴圈
-
-    BTNode* node = createNode(c);
-    if (c == '|' || c == '&') {
-        node->left = parseExpression(expr);
-        node->right = parseExpression(expr);
+Node* ReadOneList() {
+    Node* dummy_head = (Node*)malloc(sizeof(Node));
+    scanf("%d: ", &(dummy_head->size));
+    dummy_head->data = (int*)malloc(dummy_head->size * sizeof(int));
+    for(int i=0; i<(dummy_head->size); i++) {
+        int x;
+        scanf("%d", &x);
+        getchar();
+        *((dummy_head->data)+i) = x;   
     }
-    return node;
+    dummy_head->next = NULL;
+    return dummy_head;
 }
 
-// 修正 eval()，確保變數正確對應
-int evaluate(BTNode* root, int A, int B, int C, int D) {
-    if (!root) return 0;
-    switch (root->c) {
-        case 'A': return A;
-        case 'B': return B;
-        case 'C': return C;
-        case 'D': return D;
-        case '&': return evaluate(root->left, A, B, C, D) & evaluate(root->right, A, B, C, D);
-        case '|': return evaluate(root->left, A, B, C, D) | evaluate(root->right, A, B, C, D);
-        default: return 0;
+void PrintList(Node* dummy_head) {
+    dummy_head = dummy_head->next;
+    while(dummy_head != NULL) {
+        printf("%d", *(dummy_head->data));
+        for(int i=1; i<(dummy_head->size); i++)
+            printf(" %d", *((dummy_head->data)+i));
+        printf("\n");
+        Node* temp = dummy_head;
+        dummy_head = dummy_head->next;
     }
 }
 
-// 修正 freeTree()，避免對 NULL 記憶體釋放
-void freeTree(BTNode* root) {
-    if (root == NULL) return;
-    freeTree(root->left);
-    freeTree(root->right);
-    free(root);
-}
-
-int main() {
-    char expr[30];
-
-    // **使用 fgets() 確保輸入讀取正確**
-    while (fgets(expr, sizeof(expr), stdin)) {
-        expr[strcspn(expr, "\n")] = '\0';  // **去除換行符號**
-        if (expr[0] == '\0') break;  // **避免空輸入**
-
-        const char* p = expr;  // **用 `const char*` 確保 `parseExpression()` 正確解析**
-        BTNode* root = parseExpression(&p);
-
-        printf("A B C D output\n");
-        for (int A = 0; A < 2; A++) {
-            for (int B = 0; B < 2; B++) {
-                for (int C = 0; C < 2; C++) {
-                    for (int D = 0; D < 2; D++) {
-                        int result = evaluate(root, A, B, C, D);
-                        printf("%d %d %d %d %d\n", A, B, C, D, result);
-                    }
-                }
-            }
-        }
-
-        freeTree(root);  // **釋放記憶體**
+void Merge(Node* dummy_head, int x, int y) {
+    if(x == y) return;
+    Node* prev_x = dummy_head;
+    Node* temp_x = prev_x->next;
+    Node* prev_y = dummy_head;
+    Node* temp_y = prev_y->next;
+    x--;
+    while(x--) {
+        prev_x = prev_x->next;
+        temp_x = temp_x->next;
+        if(temp_x == NULL) return;
     }
-
-    printf("Program finished.\n");  // **確認程式正常結束**
-    return 0;
+    y--;
+    while(y--) {
+        prev_y = prev_y->next;
+        temp_y = temp_y->next;
+        if(temp_y == NULL) return;
+    }
+    Node* new_head = (Node*)malloc(sizeof(Node));
+    new_head->size = temp_x->size + temp_y->size;
+    new_head->data = (int*)malloc((new_head->size) * sizeof(int));
+    int i;
+    for(i=0; i<temp_y->size; i++)
+        *((new_head->data)+i) = *((temp_y->data)+i);
+    for(int j=0; j<temp_x->size; j++)
+        *((new_head->data)+i+j) = *((temp_x->data)+j);
+    
+    if(temp_y == prev_x) {
+        prev_y->next = new_head;
+        new_head->next = temp_x->next;
+    }
+    else if(temp_x == prev_y) {
+        prev_x->next = new_head;
+        new_head->next = temp_y->next;
+    }
+    else {
+        prev_y->next = new_head;
+        new_head->next = temp_y->next;
+        prev_x->next = temp_x->next;
+    }
+    free(temp_x->data);
+    free(temp_x);
+    free(temp_y->data);
+    free(temp_y);
 }
+
+void Cut(Node* dummy_head, int x, int y) {
+    Node* prev = dummy_head;
+    Node* temp = dummy_head->next;
+    x--;
+    while(x--) {
+        prev = prev->next;
+        temp = temp->next;
+    }
+    if(temp->size < 2) return;
+    int size_1 = y;
+    int size_2 = temp->size - y;
+    Node* new_head_1 = (Node*)malloc(sizeof(Node));
+    Node* new_head_2 = (Node*)malloc(sizeof(Node));
+    new_head_1->size = size_1;
+    new_head_2->size = size_2;
+    new_head_1->data = (int*)malloc(new_head_1->size * sizeof(int));
+    new_head_2->data = (int*)malloc(new_head_2->size * sizeof(int));
+    int i;
+    for(i=0; i<new_head_1->size; i++)
+        *(new_head_1->data+i) = *(temp->data+i);
+    for(int j=0; j<new_head_2->size; j++)
+        *(new_head_2->data+j) = *(temp->data+i+j);
+    prev->next = new_head_1;
+    new_head_1->next = new_head_2;
+    new_head_2->next = temp->next;
+    free(temp->data);
+    free(temp);
+}
+
+
+// By P.Wang

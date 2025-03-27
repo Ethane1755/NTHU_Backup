@@ -11,68 +11,103 @@ typedef struct _Node{
 Node* ReadOneList() {
     Node* newNode = (Node*)malloc(sizeof(Node));
     int size, temp;
-    scanf("%d", &size);
+    scanf("%d: ", &size);
     newNode -> size = size;
+    newNode -> data = (int*)malloc(sizeof(int) * size);
     for (int i = 0; i < size; i++) {
         scanf("%d", &temp);
+        getchar();
         newNode -> data[i] = temp;
     }
     newNode -> next = NULL; 
     return newNode;
 }
+
 void PrintList(Node* x) {
-    int size = x -> size;
-    for (int i = 0; i < size - 1; i++) {
-        printf("%d ", x -> data[i]);
-    }
-    printf("%d\n", x -> data[size - 1]);
     x = x -> next;
-}
-void Merge(Node* x, int a, int b) {
-    Node* x1 = (Node*)malloc(sizeof(Node));
-    Node* merged = (Node*)malloc(sizeof(Node));
-    Node* forMerge = (Node*)malloc(sizeof(Node));
-    Node* prev = (Node*)malloc(sizeof(Node));
-    int* temp;
-    x1 = x;
-    while (a--) {
+    while (x != NULL) {
+        int size = x -> size;
+        for (int i = 0; i < size - 1; i++) {
+            printf("%d ", x -> data[i]);
+        }
+        printf("%d\n", x -> data[size - 1]);
         x = x -> next;
     }
-    forMerge = x;
-    while (b >= 1) {
-        x1 = x1 -> next;
-        prev = x1;
+}
+
+void Merge(Node* x, int a, int b) {
+    if (a == b) return;
+    Node* prev_x = x;
+    Node* temp_x = prev_x -> next;
+    Node* prev_y = x;
+    Node* temp_y = prev_y -> next;
+    a--;
+    while (a--) {
+        prev_x = prev_x -> next;
+        temp_x = temp_x -> next;
+        if (temp_x == NULL) return;
     }
-    x1 = x1 -> next;
-    merged = x1;
-    for (int i = 0; i < forMerge -> size; i++) {
-        temp[i] = (forMerge -> data)[i];
+    b--;
+    while (b--) {
+        prev_y = prev_y -> next;
+        temp_y = temp_y -> next;
+        if (temp_y == NULL) return;
     }
-    for (int i = merged -> size; i < (merged -> size + forMerge -> size); i++) {
-        merged -> data[i] = temp[i];
+    Node* x1 = (Node*)malloc(sizeof(Node));
+    x1 -> size = temp_x -> size + temp_y -> size;
+    x1 -> data = (int*)malloc(sizeof(int) * x1 -> size);
+    int i;
+    for (int i; i < temp_y -> size; i++) {
+        x1 -> data[i] = temp_y -> data[i];
     }
-    merged -> size += forMerge -> size;
-    if (forMerge -> next != NULL) prev -> next = forMerge -> next;
-    else prev -> next = NULL;
-    free(forMerge);
+    for (int j = 0; j < temp_x -> size; j++) {
+        x1 -> data[i + j] = temp_x -> data[j];
+    }
+    if (temp_y == prev_x) {
+        prev_y -> next = x1;
+        x1 -> next = temp_x -> next;
+    } else if (temp_x = prev_y) {
+        prev_x -> next = x1;
+        x1 -> next = temp_y -> next;
+    } else {
+        prev_y -> next = x1;
+        x1 -> next = temp_y -> next;
+        prev_x -> next = temp_x -> next;
+    }
+    free(temp_x -> data);
+    free(temp_x);
+    free(temp_y -> data);
+    free(temp_y);
 }
 void Cut(Node* x, int a, int b) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    int* temp;
+    Node* prev = (Node*)malloc(sizeof(Node));
+    Node* temp = (Node*)malloc(sizeof(Node));
+    a--;
     while (a--) {
-        x = x -> next;
+        prev = prev -> next;
+        temp = temp -> next;
     }
-    for (int i = b - 1; i < x -> size; i++) {
-        temp[i] = x -> data[i];
+    if (temp -> size < 2) return;
+    int size1 = b;
+    int size2 = temp -> size - b;
+    Node* x1 = (Node*)malloc(sizeof(Node));
+    Node* x2 = (Node*)malloc(sizeof(Node));
+    x1 -> size = size1;
+    x2 -> size = size2;
+    x1 -> data = (int*)malloc(sizeof(int) * size1);
+    x2 -> data = (int*)malloc(sizeof(int) * size2);
+    int i;
+    for (i = 0; i < size1; i++) {
+        x1 -> data[i] = temp -> data[i];
     }
-    newNode -> size = (x -> size) - b;
-    for (int i = b - 1; i < x -> size; i++) {
-        newNode -> data[i] = temp[i];
+    for (int j = 0; j < size2; j++) {
+        x2 -> data[j] = temp -> data[i + j];
     }
-    if(x -> next != NULL) newNode -> next = x -> next;
-    else newNode -> next = NULL;
-    x -> next = newNode;
-    x -> size = b;
+    prev -> next = x1;
+    x1 -> next = x2;
+    x2 -> next = temp -> next;
+    free(temp -> data);
+    free(temp);
 }
 
 #endif
