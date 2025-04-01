@@ -3,15 +3,7 @@
 using namespace std;
 using std::string;
 
-main () {
-    int N;
-    string a, b;
-    cin >> N;
-    while (N--) {
-        cin >> a;
-        
-    }
-    
-
+int main () {
+    cout << "Hello";
     return 0;
 }
