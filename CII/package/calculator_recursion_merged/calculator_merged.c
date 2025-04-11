@@ -13,6 +13,9 @@ typedef enum {
     INT, ID,
     ADDSUB, MULDIV,
     ASSIGN,
+    AND, OR, XOR,
+    ADDSUB_ASSIGN,
+    INCDEC,
     LPAREN, RPAREN
 } TokenSet;
 
@@ -117,8 +120,20 @@ TokenSet getToken(void)
         return INT;
     } else if (c == '+' || c == '-') {
         lexeme[0] = c;
-        lexeme[1] = '\0';
-        return ADDSUB;
+        c = fgetc(stdin);
+        if (c == '=') {
+            lexeme[1] = c;
+            lexeme[2] = '\0';
+            return ADDSUB_ASSIGN;
+        } else if (c == '+' || c == '-') {
+            lexeme[1] = c;
+            lexeme[2] = '\0';
+            return INCDEC;
+        } else {
+            ungetc(c, stdin);
+            lexeme[1] = '\0';
+            return ADDSUB;
+        }   
     } else if (c == '*' || c == '/') {
         lexeme[0] = c;
         lexeme[1] = '\0';
@@ -135,15 +150,35 @@ TokenSet getToken(void)
     } else if (c == ')') {
         strcpy(lexeme, ")");
         return RPAREN;
-    } else if (isalpha(c)) {
+    } else if (c == '&') {
         lexeme[0] = c;
         lexeme[1] = '\0';
+        return AND;
+    } else if (c == '|') {
+        lexeme[0] = c;
+        lexeme[1] = '\0';
+        return OR;
+    } else if (c == '^') {
+        lexeme[0] = c;
+        lexeme[1] = '\0';
+        return XOR;
+    } else if (isalpha(c)) {
+        lexeme[0] = c;
+        c = fgetc(stdin);
+        int i = 0;
+        while ((isalnum(c) || c == '_') && i < MAXLEN - 1) {
+            lexeme[i] = c;
+            ++i;
+            c = fgetc(stdin);
+        }
+        ungetc(c, stdin);
+        lexeme[i] = '\0';
         return ID;
     } else if (c == EOF) {
         return ENDFILE;
     } else {
         return UNKNOWN;
-    }
+    } 
 }
 
 void advance(void) {
