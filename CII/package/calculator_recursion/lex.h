@@ -10,7 +10,7 @@ typedef enum {
     ADDSUB, MULDIV,
     ASSIGN, 
     LPAREN, RPAREN,
-    AND, OR, XOR,
+    ANDORXOR,
     INCDEC,
     ADDSUB_ASSIGN
 } TokenSet;

@@ -2,6 +2,8 @@
 #include <string.h>
 #include <ctype.h>
 #include "lex.h"
+#include "parser.h"
+#include "codeGen.h"
 
 static TokenSet getToken(void);
 static TokenSet curToken = UNKNOWN;
@@ -46,18 +48,10 @@ TokenSet getToken(void)
         lexeme[0] = c;
         lexeme[1] = '\0';
         return MULDIV;
-    } else if (c == '&') {
+    } else if (c == '&' || c == '|' || c == '^') {
         lexeme[0] = c;
         lexeme[1] = '\0';
-        return AND;
-    } else if (c == '|') {
-        lexeme[0] = c;
-        lexeme[1] = '\0';
-        return OR;
-    } else if (c == '^') {
-        lexeme[0] = c;
-        lexeme[1] = '\0';
-        return XOR;
+        return ANDORXOR;
     } else if (c == '\n') {
         lexeme[0] = '\0';
         return END;

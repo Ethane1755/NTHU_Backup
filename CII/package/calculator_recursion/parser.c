@@ -3,6 +3,7 @@
 #include <string.h>
 #include "parser.h"
 #include "codeGen.h"
+#include "lex.h"
 
 int sbcount = 0;
 Symbol table[TBLSIZE];
@@ -84,13 +85,35 @@ BTNode *factor(void) {
     } else if (match(ID)) {
         left = makeNode(ID, getLexeme());
         advance();
-        if (!match(ASSIGN)) {
-            retp = left;
-        } else {
+        if (match(ASSIGN)) {
             retp = makeNode(ASSIGN, getLexeme());
             advance();
             retp->left = left;
             retp->right = expr();
+        } else if (match(ADDSUB_ASSIGN)) {
+            // x += expr --> x = x + expr
+            retp = makeNode(ASSIGN, "=");
+            retp->left = left;
+    
+            BTNode *op = makeNode(ADDSUB, getLexeme());
+            advance();
+            op->left = makeNode(ID, left->lexeme); // copy of x
+            op->right = expr();
+    
+            retp->right = op;
+        } else if (match(INCDEC)) {
+            // x++ --> x = x + 1 or x - 1
+            retp = makeNode(ASSIGN, "=");
+            retp->left = left;
+    
+            BTNode *op = makeNode(ADDSUB, getLexeme()[0] == '+' ? "+" : "-");
+            advance();
+            op->left = makeNode(ID, left->lexeme); // copy of x
+            op->right = makeNode(INT, "1");
+    
+            retp->right = op;
+        } else {
+            retp = left;
         }
     } else if (match(ADDSUB)) {
         retp = makeNode(ADDSUB, getLexeme());
@@ -111,7 +134,7 @@ BTNode *factor(void) {
                 error(MISPAREN);
         } else {
             error(NOTNUMID);
-        }
+        }   
     } else if (match(LPAREN)) {
         advance();
         retp = expr();
@@ -161,6 +184,14 @@ BTNode *expr_tail(BTNode *left) {
         advance();
         node->left = left;
         node->right = term();
+        return expr_tail(node);
+    } else if (match(ANDORXOR)) {
+        node = makeNode(ANDORXOR, getLexeme());
+        advance();
+
+        node->left = left;
+        node->right = term();
+
         return expr_tail(node);
     } else {
         return left;

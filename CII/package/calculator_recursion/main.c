@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "lex.h"
 #include "parser.h"
+#include "codeGen.h"
 
 // This package is a calculator
 // It works like a Python interpretor
