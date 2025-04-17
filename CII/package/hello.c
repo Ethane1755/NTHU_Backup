@@ -210,24 +210,21 @@ BTNode *factor(void);
 
 BTNode *assign_expr(void) {
     BTNode *node;
-    
-    allow_undeclared_id = 1;  // 允許新的 ID，因為左邊可能是新變數
+    allow_undeclared_id = 1;  // 允許 assign 左值自動宣告
     node = or_expr();
-    allow_undeclared_id = 0;  // 之後恢復原狀
+    allow_undeclared_id = 0;
     if (node->data == ID ) {
         if (match(ASSIGN)) {
             char id[MAXLEN];
-            strcpy(id, node->lexeme); // 儲存變數名稱
-            //printf("%s\n", id);
-            free(node); // 先釋放掉舊的節點
+            strcpy(id, node->lexeme);
+            free(node);
             advance();
-            addVar(id); // 宣告變數
+            addVar(id); // 只在 assign 左值時宣告
             BTNode *assignNode = makeNode(ASSIGN, "=");
             assignNode->left = makeNode(ID, id);
-            assignNode->right = assign_expr(); // 注意是 assign_expr (右結合)
+            assignNode->right = assign_expr(); // 右結合
             return assignNode;
         }
-    
         if (match(ADDSUB_ASSIGN)) {
             char id[MAXLEN];
             strcpy(id, node->lexeme);
@@ -235,10 +232,10 @@ BTNode *assign_expr(void) {
             char op[MAXLEN];
             strcpy(op, getLexeme());
             advance();
-            if (lookup(id) == -1) err(NOTFOUND);
+            if (lookup(id) == -1) err(NOTFOUND); // +=, -= 左值必須已宣告
             BTNode *assignNode = makeNode(ADDSUB_ASSIGN, op);
             assignNode->left = makeNode(ID, id);
-            assignNode->right = assign_expr(); 
+            assignNode->right = assign_expr();
             return assignNode;
         }
     }
@@ -351,11 +348,12 @@ BTNode *factor(void) {
     } else if (match(ID)) {
         char id[MAXLEN];
         strcpy(id, getLexeme());
+        // 僅允許 assign_expr 左值時自動宣告
         if (lookup(id) == -1) {
             if (allow_undeclared_id) {
-                addVar(id);  // 如果允許，就幫他加進 symbol table
+                addVar(id);  // assign_expr 左值時允許
             } else {
-                err(NOTFOUND);
+                err(NOTFOUND); // 右值遇到未宣告變數直接 EXIT 1
             }
         }
         advance();
@@ -617,14 +615,14 @@ int main() {
         if (!match(END) && !match(ENDFILE)) err(SYNTAXERR);
         codeGen(root, 1);
         evaluateTree(root);
-        /*printf("Prefix traversal: ");
+        printf("Prefix traversal: ");
         printPrefix(root);
         printf("\n");
         for (int i = 0; i < sbcount - 1; i++) {
             printf("%s: %d, ", table[i].name, table[i].val);
         }
         printf("%s: %d\n", table[sbcount-1].name, table[sbcount-1].val);
-        */
+        
         freeTree(root);
         advance();
     }
