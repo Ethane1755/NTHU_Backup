@@ -5,13 +5,15 @@
 
 #define MAXLEN 256
 #define TBLSIZE 64
+#define MAX_REG 8
+int allow_undeclared_id = 0;  // 預設不允許未宣告 ID
 
-// === Token and AST Definitions ===
 typedef enum {
     UNKNOWN, END, ENDFILE,
     INT, ID,
-    ADDSUB, MULDIV, ANDORXOR,
     ASSIGN, ADDSUB_ASSIGN, INCDEC,
+    OR, XOR, AND,
+    ADDSUB, MULDIV,
     LPAREN, RPAREN
 } TokenSet;
 
@@ -19,34 +21,111 @@ typedef enum {
     MISPAREN, NOTNUMID, NOTFOUND, RUNOUT, NOTLVAL, DIVZERO, SYNTAXERR
 } ErrorType;
 
-#define PRINTERR 1
-
 typedef struct _BTNode {
     TokenSet data;
     char lexeme[MAXLEN];
-    int val;
     struct _BTNode *left, *right;
 } BTNode;
 
-// === Symbol Table ===
 typedef struct {
     char name[MAXLEN];
     int val;
+    int defined; // 1:已定義(左值), 0:未定義
 } Symbol;
+
+typedef struct
+{
+    char name[3]; // r0, r1, r2...
+    int val;
+    int unknown_val;
+    int occupy;
+} Register;
+Register reg[MAX_REG];
 
 Symbol table[TBLSIZE];
 int sbcount = 0;
 
-// === Lexer ===
 TokenSet curToken = UNKNOWN;
 char lexeme[MAXLEN];
+
+void err(ErrorType errorNum) {
+    printf("EXIT 1\n");
+    exit(0);
+}
+
+void initReg()
+{
+    for(int i=0;i<8;i++){
+        reg[i].occupy=0;
+        reg[i].name[0]='r';
+        reg[i].name[1]=i+'0';
+        reg[i].name[2]='\0';
+    }
+}
+
+Register *unused_reg(){
+    Register *cur=NULL;
+    for(int i=0;i<8;i++){
+        if(reg[i].occupy==0){
+            cur=&(reg[i]);
+            cur->occupy=1;
+            break;
+        }
+    }
+    if(cur==NULL){
+        err(RUNOUT);
+    }
+    return cur;
+}
+
+void returnReg(Register *reg)
+{
+    reg->occupy = 0;
+}
+
+
+
+void initTable(void) {
+    strcpy(table[0].name, "x"); table[0].val = 0; table[0].defined = 1;
+    strcpy(table[1].name, "y"); table[1].val = 0; table[1].defined = 1;
+    strcpy(table[2].name, "z"); table[2].val = 0; table[2].defined = 1;
+    sbcount = 3;
+}
+
+int lookup(char *str) {
+    for (int i = 0; i < sbcount; i++)
+        if (strcmp(str, table[i].name) == 0)
+            return i;
+    return -1;
+}
+
+int get_addr(char *str){
+    int addr=0;
+    int i=0;
+    while(i<sbcount){
+        if(strcmp(str,table[i].name)==0){
+            addr=4*i;
+            break;
+        }
+        i++;
+    }
+    //err(NOTFOUND);
+    return addr;
+}
+
+void addVar(char *str) {
+    if (lookup(str) == -1) {
+        strcpy(table[sbcount].name, str);
+        table[sbcount].val = 0;
+        table[sbcount].defined = 1;
+        sbcount++;
+    }
+}
 
 TokenSet getToken(void) {
     int i = 0;
     char c = '\0';
-
     while ((c = fgetc(stdin)) == ' ' || c == '\t');
-
     if (isdigit(c)) {
         lexeme[0] = c;
         c = fgetc(stdin);
@@ -58,42 +137,6 @@ TokenSet getToken(void) {
         ungetc(c, stdin);
         lexeme[i] = '\0';
         return INT;
-    } else if (c == '+' || c == '-') {
-        lexeme[0] = c;
-        c = fgetc(stdin);
-        if (c == '=') {
-            lexeme[1] = c;
-            lexeme[2] = '\0';
-            return ADDSUB_ASSIGN;
-        } else if (c == '+' || c == '-') {
-            lexeme[1] = c;
-            lexeme[2] = '\0';
-            return INCDEC;
-        } else {
-            ungetc(c, stdin);
-            lexeme[1] = '\0';
-            return ADDSUB;
-        }
-    } else if (c == '*' || c == '/') {
-        lexeme[0] = c;
-        lexeme[1] = '\0';
-        return MULDIV;
-    } else if (c == '&' || c == '|' || c == '^') {
-        lexeme[0] = c;
-        lexeme[1] = '\0';
-        return ANDORXOR;
-    } else if (c == '\n') {
-        lexeme[0] = '\0';
-        return END;
-    } else if (c == '=') {
-        strcpy(lexeme, "=");
-        return ASSIGN;
-    } else if (c == '(') {
-        strcpy(lexeme, "(");
-        return LPAREN;
-    } else if (c == ')') {
-        strcpy(lexeme, ")");
-        return RPAREN;
     } else if (isalpha(c)) {
         i = 0;
         while ((isalnum(c) || c == '_') && i < MAXLEN - 1) {
@@ -103,57 +146,241 @@ TokenSet getToken(void) {
         ungetc(c, stdin);
         lexeme[i] = '\0';
         return ID;
-    } else if (c == EOF) {
-        return ENDFILE;
-    } else {
-        return UNKNOWN;
+    } else if (c == '+') {
+        lexeme[0] = c;
+        c = fgetc(stdin);
+        if (c == '+') { lexeme[1] = c; lexeme[2] = '\0'; return INCDEC; }
+        else if (c == '=') { lexeme[1] = c; lexeme[2] = '\0'; return ADDSUB_ASSIGN; }
+        else { ungetc(c, stdin); lexeme[1] = '\0'; return ADDSUB; }
+    } else if (c == '-') {
+        lexeme[0] = c;
+        c = fgetc(stdin);
+        if (c == '-') { lexeme[1] = c; lexeme[2] = '\0'; return INCDEC; }
+        else if (c == '=') { lexeme[1] = c; lexeme[2] = '\0'; return ADDSUB_ASSIGN; }
+        else { ungetc(c, stdin); lexeme[1] = '\0'; return ADDSUB; }
+    } else if (c == '*') { lexeme[0] = c; lexeme[1] = '\0'; return MULDIV; }
+    else if (c == '/') { lexeme[0] = c; lexeme[1] = '\0'; return MULDIV; }
+    else if (c == '&') { lexeme[0] = c; lexeme[1] = '\0'; return AND; }
+    else if (c == '|') { lexeme[0] = c; lexeme[1] = '\0'; return OR; }
+    else if (c == '^') { lexeme[0] = c; lexeme[1] = '\0'; return XOR; }
+    else if (c == '=') { lexeme[0] = c; lexeme[1] = '\0'; return ASSIGN; }
+    else if (c == '(') { lexeme[0] = c; lexeme[1] = '\0'; return LPAREN; }
+    else if (c == ')') { lexeme[0] = c; lexeme[1] = '\0'; return RPAREN; }
+    else if (c == '\n') { lexeme[0] = '\0'; return END; }
+    else if (c == EOF) { return ENDFILE; }
+    else { return UNKNOWN; }
+}
+
+void advance(void) { curToken = getToken(); }
+int match(TokenSet token) { if (curToken == UNKNOWN) advance(); return token == curToken; }
+char *getLexeme(void) { return lexeme; }
+
+BTNode *makeNode(TokenSet tok, const char *lexe) {
+    BTNode *node = (BTNode*)malloc(sizeof(BTNode));
+    strcpy(node->lexeme, lexe);
+    node->data = tok;
+    node->left = node->right = NULL;
+    return node;
+}
+void freeTree(BTNode *root) {
+    if (root) { freeTree(root->left); freeTree(root->right); free(root); }
+}
+
+void printPrefix(BTNode *root) {
+    if (root != NULL) {
+        printf("%s ", root->lexeme);
+        printPrefix(root->left);
+        printPrefix(root->right);
     }
 }
+// --- Parser 分層 ---
+BTNode *assign_expr(void);
+BTNode *or_expr(void);
+BTNode *or_expr_tail(BTNode *);
+BTNode *xor_expr(void);
+BTNode *xor_expr_tail(BTNode *);
+BTNode *and_expr(void);
+BTNode *and_expr_tail(BTNode *);
+BTNode *addsub_expr(void);
+BTNode *addsub_expr_tail(BTNode *);
+BTNode *muldiv_expr(void);
+BTNode *muldiv_expr_tail(BTNode *);
+BTNode *unary_expr(void);
+BTNode *factor(void);
 
-void advance(void) {
-    curToken = getToken();
-}
-
-int match(TokenSet token) {
-    if (curToken == UNKNOWN) advance();
-    return token == curToken;
-}
-
-char *getLexeme(void) {
-    return lexeme;
-}
-
-// === Error Handling ===
-void err(ErrorType errorNum) {
-    if (PRINTERR) {
-        fprintf(stderr, "error: ");
-        switch (errorNum) {
-            case MISPAREN: fprintf(stderr, "mismatched parenthesis\n"); break;
-            case NOTNUMID: fprintf(stderr, "number or identifier expected\n"); break;
-            case NOTFOUND: fprintf(stderr, "variable not defined\n"); break;
-            case RUNOUT: fprintf(stderr, "out of memory\n"); break;
-            case NOTLVAL: fprintf(stderr, "lvalue required as an operand\n"); break;
-            case DIVZERO: fprintf(stderr, "divide by constant zero\n"); break;
-            case SYNTAXERR: fprintf(stderr, "syntax error\n"); break;
-            default: fprintf(stderr, "undefined error\n"); break;
+BTNode *assign_expr(void) {
+    BTNode *node;
+    
+    allow_undeclared_id = 1;  // 允許新的 ID，因為左邊可能是新變數
+    node = or_expr();
+    allow_undeclared_id = 0;  // 之後恢復原狀
+    if (node->data == ID ) {
+        if (match(ASSIGN)) {
+            char id[MAXLEN];
+            strcpy(id, node->lexeme); // 儲存變數名稱
+            //printf("%s\n", id);
+            free(node); // 先釋放掉舊的節點
+            advance();
+            addVar(id); // 宣告變數
+            BTNode *assignNode = makeNode(ASSIGN, "=");
+            assignNode->left = makeNode(ID, id);
+            assignNode->right = assign_expr(); // 注意是 assign_expr (右結合)
+            return assignNode;
+        }
+    
+        if (match(ADDSUB_ASSIGN)) {
+            char id[MAXLEN];
+            strcpy(id, node->lexeme);
+            free(node);
+            char op[MAXLEN];
+            strcpy(op, getLexeme());
+            advance();
+            if (lookup(id) == -1) err(NOTFOUND);
+            BTNode *assignNode = makeNode(ADDSUB_ASSIGN, op);
+            assignNode->left = makeNode(ID, id);
+            assignNode->right = assign_expr(); 
+            return assignNode;
         }
     }
-    exit(0);
+    return node;
 }
 
-// === Symbol Table ===
-void initTable(void) {
-    strcpy(table[0].name, "x"); table[0].val = 0;
-    strcpy(table[1].name, "y"); table[1].val = 0;
-    strcpy(table[2].name, "z"); table[2].val = 0;
-    sbcount = 3;
+BTNode *or_expr(void) {
+    BTNode *node = xor_expr();
+    return or_expr_tail(node);
+}
+BTNode *or_expr_tail(BTNode *left) {
+    if (match(OR)) {
+        BTNode *node = makeNode(OR, getLexeme()); advance();
+        node->left = left; node->right = xor_expr();
+        return or_expr_tail(node);
+    }
+    return left;
+}
+BTNode *xor_expr(void) {
+    BTNode *node = and_expr();
+    return xor_expr_tail(node);
+}
+BTNode *xor_expr_tail(BTNode *left) {
+    if (match(XOR)) {
+        BTNode *node = makeNode(XOR, getLexeme()); advance();
+        node->left = left; node->right = and_expr();
+        return xor_expr_tail(node);
+    }
+    return left;
+}
+BTNode *and_expr(void) {
+    BTNode *node = addsub_expr();
+    return and_expr_tail(node);
+}
+BTNode *and_expr_tail(BTNode *left) {
+    if (match(AND)) {
+        BTNode *node = makeNode(AND, getLexeme()); advance();
+        node->left = left; node->right = addsub_expr();
+        return and_expr_tail(node);
+    }
+    return left;
+}
+BTNode *addsub_expr(void) {
+    BTNode *node = muldiv_expr();
+    return addsub_expr_tail(node);
+}
+BTNode *addsub_expr_tail(BTNode *left) {
+    if (match(ADDSUB)) { // 處理加減運算
+        BTNode *node = makeNode(ADDSUB, getLexeme());
+        advance();
+        node->left = left;
+        node->right = muldiv_expr();
+        return addsub_expr_tail(node);
+    }
+    return left;
+}
+BTNode *muldiv_expr(void) {
+    BTNode *node = unary_expr();
+    return muldiv_expr_tail(node);
+}
+BTNode *muldiv_expr_tail(BTNode *left) {
+    if (match(MULDIV)) {
+        BTNode *node = makeNode(MULDIV, getLexeme()); 
+        advance();
+        node->left = left; 
+        node->right = unary_expr();
+        return muldiv_expr_tail(node);
+    }
+    return left;
+}
+BTNode *unary_expr(void) {
+    if (match(ADDSUB)) {
+        char op[MAXLEN]; 
+        strcpy(op, getLexeme());
+        advance();
+        if (match(LPAREN)) { 
+            //printf("asd\n");
+            advance();
+            BTNode *node = or_expr();
+            if (!match(RPAREN)) err(MISPAREN);
+            advance();
+            BTNode *unaryNode = makeNode(ADDSUB, op);
+            unaryNode->left = makeNode(INT, "0");
+            unaryNode->right = node;
+            return unaryNode;
+        } else { // 處理一般一元運算
+            //printf("asd\n");
+            BTNode *node = makeNode(ADDSUB, op);
+            node->left = makeNode(INT, "0");
+            node->right = unary_expr();
+            return node;
+        }
+    }  else if (match(INCDEC)) {
+        char op[MAXLEN]; strcpy(op, getLexeme());
+        advance();
+        if (!match(ID)) err(NOTNUMID);
+        if (lookup(getLexeme()) == -1) err(NOTFOUND);
+        BTNode *node = makeNode(INCDEC, op);
+        node->left = makeNode(ID, getLexeme());
+        advance();
+        return node;
+    }
+    return factor();
+}
+BTNode *factor(void) {
+    if (match(INT)) {
+        BTNode *node = makeNode(INT, getLexeme());
+        advance();
+        return node;
+    } else if (match(ID)) {
+        char id[MAXLEN];
+        strcpy(id, getLexeme());
+        if (lookup(id) == -1) {
+            if (allow_undeclared_id) {
+                addVar(id);  // 如果允許，就幫他加進 symbol table
+            } else {
+                err(NOTFOUND);
+            }
+        }
+        advance();
+        return makeNode(ID, id);
+    } else if (match(LPAREN)) {
+        advance();
+        BTNode *node = assign_expr();
+        if (!match(RPAREN)) err(MISPAREN);
+        advance();
+        return node;
+    }
+    err(NOTNUMID);
+    return NULL;
 }
 
 int getval(char *str) {
-    for (int i = 0; i < sbcount; i++)
+    int i = 0;
+
+    for (i = 0; i < sbcount; i++)
         if (strcmp(str, table[i].name) == 0)
             return table[i].val;
-    if (sbcount >= TBLSIZE) err(RUNOUT);
+
+    if (sbcount >= TBLSIZE)
+        err(RUNOUT);
+
     strcpy(table[sbcount].name, str);
     table[sbcount].val = 0;
     sbcount++;
@@ -161,183 +388,247 @@ int getval(char *str) {
 }
 
 int setval(char *str, int val) {
-    for (int i = 0; i < sbcount; i++) {
+    int i = 0;
+
+    for (i = 0; i < sbcount; i++) {
         if (strcmp(str, table[i].name) == 0) {
             table[i].val = val;
             return val;
         }
     }
-    if (sbcount >= TBLSIZE) err(RUNOUT);
+
+    if (sbcount >= TBLSIZE)
+        err(RUNOUT);
+
     strcpy(table[sbcount].name, str);
     table[sbcount].val = val;
     sbcount++;
     return val;
 }
-
-// === AST Operations ===
-BTNode *makeNode(TokenSet tok, const char *lexe) {
-    BTNode *node = (BTNode*)malloc(sizeof(BTNode));
-    strcpy(node->lexeme, lexe);
-    node->data = tok;
-    node->val = 0;
-    node->left = NULL;
-    node->right = NULL;
-    return node;
-}
-
-void freeTree(BTNode *root) {
-    if (root) {
-        freeTree(root->left);
-        freeTree(root->right);
-        free(root);
-    }
-}
-
 int evaluateTree(BTNode *root) {
     int retval = 0, lv = 0, rv = 0;
-    if (!root) return 0;
 
-    switch (root->data) {
-        case ID: retval = getval(root->lexeme); break;
-        case INT: retval = atoi(root->lexeme); break;
-        case ASSIGN:
-            rv = evaluateTree(root->right);
-            retval = setval(root->left->lexeme, rv);
-            break;
-        case ADDSUB:
-        case MULDIV:
-        case ANDORXOR:
-            lv = evaluateTree(root->left);
-            rv = evaluateTree(root->right);
-            if (!strcmp(root->lexeme, "+")) retval = lv + rv;
-            else if (!strcmp(root->lexeme, "-")) retval = lv - rv;
-            else if (!strcmp(root->lexeme, "*")) retval = lv * rv;
-            else if (!strcmp(root->lexeme, "/")) {
-                if (rv == 0) err(DIVZERO);
-                retval = lv / rv;
-            } else if (!strcmp(root->lexeme, "&")) retval = lv & rv;
-            else if (!strcmp(root->lexeme, "|")) retval = lv | rv;
-            else if (!strcmp(root->lexeme, "^")) retval = lv ^ rv;
-            break;
-        default: retval = 0;
+    if (root != NULL) {
+        switch (root->data) {
+            case ID:
+                retval = getval(root->lexeme);
+                break;
+            case INT:
+                retval = atoi(root->lexeme);
+                break;
+            case ASSIGN:
+                rv = evaluateTree(root->right);
+                retval = setval(root->left->lexeme, rv);
+                break;
+            case ADDSUB:
+            case MULDIV:
+            case AND:
+            case OR:
+            case XOR:
+                lv = evaluateTree(root->left);
+                rv = evaluateTree(root->right);
+                if (strcmp(root->lexeme, "+") == 0) {
+                    retval = lv + rv;
+                } else if (strcmp(root->lexeme, "-") == 0) {
+                    retval = lv - rv;
+                } else if (strcmp(root->lexeme, "*") == 0) {
+                    retval = lv * rv;
+                } else if (strcmp(root->lexeme, "/") == 0) {
+                    if (rv == 0) retval = 0;
+                    else retval = lv / rv;
+                } else if (strcmp(root->lexeme, "&") == 0) {
+                    retval = lv & rv;
+                } else if (strcmp(root->lexeme, "|") == 0) {
+                    retval = lv | rv;
+                } else if (strcmp(root->lexeme, "^") == 0) {
+                    retval = lv ^ rv;
+                }
+                break;
+            case INCDEC:
+                lv = evaluateTree(root->left);
+                if (strcmp(root->lexeme, "++") == 0) {
+                    retval = setval(root -> left -> lexeme, lv + 1);
+                } else {
+                    retval = setval(root -> left -> lexeme, lv - 1);
+                }
+                break;
+            case ADDSUB_ASSIGN:
+                lv = evaluateTree(root->left);
+                rv = evaluateTree(root->right);
+                if (strcmp(root->lexeme, "+=") == 0) {
+                    retval = setval(root->left->lexeme, lv += rv);
+                } else {
+                    retval = setval(root->left->lexeme, lv -= rv);
+                }
+                break;
+            default:
+                retval = 0;
+        }
     }
     return retval;
 }
-
-void printPrefix(BTNode *root) {
-    if (root) {
-        printf("%s ", root->lexeme);
-        printPrefix(root->left);
-        printPrefix(root->right);
+int containsVariable(BTNode *root) {
+    if (root == NULL) {
+        return 0; 
     }
+    if (root->data == ID) {
+        return 1; 
+    }
+    return containsVariable(root->left) || containsVariable(root->right);
 }
 
-// === Parser ===
-BTNode *expr(void);
-BTNode *term(void);
-BTNode *factor(void);
-BTNode *term_tail(BTNode *);
-BTNode *expr_tail(BTNode *);
+// --- Codegen ---
+int regCount = 0;
+int getReg() { return regCount++; }
 
-BTNode *factor(void) {
-    BTNode *retp = NULL, *left = NULL;
+Register *codeGen(BTNode *root,int keep){
+    Register *retreg=NULL,*lreg=NULL,*rreg=NULL;
+    int addr=0;
+    if (root != NULL) {
+        switch (root->data) {
+            case ID:
+                addr=get_addr(root->lexeme);
+                retreg=unused_reg();
+                printf("MOV %s [%d]\n",retreg->name,addr);
+                break;
+            case INT:
+                retreg=unused_reg();
+                printf("MOV %s %d\n",retreg->name,atoi(root->lexeme));
+                break;
+            case ASSIGN:
+                addr=get_addr(root->left->lexeme);
+                rreg=codeGen(root->right,1);
+                printf("MOV [%d] %s\n", addr, rreg->name);
+                returnReg(rreg);
+                retreg=rreg;
+                break;
+            case ADDSUB_ASSIGN:
+                if(strcmp(root->lexeme,"+=")==0){
+                    lreg=codeGen(root->left,1);//x的register
+                    rreg=codeGen(root->right,1);//expr的register
+                    addr=get_addr(root->left->lexeme);
+                    printf("ADD %s %s\n",lreg->name,rreg->name);
+                    printf("MOV [%d] %s\n",addr,lreg->name);
+                    returnReg(rreg);
+                    returnReg(lreg);
+                    retreg=lreg;
 
-    if (match(INT)) {
-        retp = makeNode(INT, getLexeme());
-        advance();
-    } else if (match(ID)) {
-        left = makeNode(ID, getLexeme());
-        advance();
-        if (match(ASSIGN)) {
-            retp = makeNode(ASSIGN, getLexeme()); advance();
-            retp->left = left; retp->right = expr();
-        } else if (match(ADDSUB_ASSIGN)) {
-            // x += expr --> x = x + expr
-            retp = makeNode(ASSIGN, "=");
-            retp->left = left;
-            // 避免 lexeme 是 += 而不是 +
-            char op_char = getLexeme()[0]; // '+' or '-'
-            BTNode *op = makeNode(ADDSUB, op_char == '+' ? "+" : "-");
-            advance();
-            op->left = makeNode(ID, left->lexeme); // copy of x
-            op->right = expr();
-            retp->right = op;
-        } else if (match(INCDEC)) {
-            retp = makeNode(ASSIGN, "="); retp->left = left;
-            BTNode *op = makeNode(ADDSUB, getLexeme()[0] == '+' ? "+" : "-"); advance();
-            op->left = makeNode(ID, left->lexeme);
-            op->right = makeNode(INT, "1");
-            retp->right = op;
-        } else {
-            retp = left;
+                }
+                else if(strcmp(root->lexeme,"-=")==0){
+                    lreg=codeGen(root->left,1);//x的register
+                    rreg=codeGen(root->right,1);//expr的register
+                    addr=get_addr(root->left->lexeme);
+                    printf("SUB %s %s\n",lreg->name,rreg->name);
+                    printf("MOV [%d] %s\n",addr,lreg->name);
+                    returnReg(rreg);
+                    returnReg(lreg);
+                    retreg=lreg;
+                }
+                break;
+             case INCDEC:
+                if(strcmp(root->lexeme,"++")==0){
+                    retreg=codeGen(root->left,1);
+                    addr=get_addr(root->left->lexeme);
+                    lreg=unused_reg();
+                    printf("MOV %s 1\n",lreg->name);
+                    printf("ADD %s %s\n",retreg->name,lreg->name);
+                    printf("MOV [%d] %s\n",addr,retreg->name);
+                    if(keep==0){
+                        returnReg(retreg);
+                    }
+                    returnReg(lreg);
+                }
+                else if(strcmp(root->lexeme,"--")==0){
+                    retreg=codeGen(root->left,1);
+                    addr=get_addr(root->left->lexeme);
+                    lreg=unused_reg();
+                    printf("MOV %s 1\n",lreg->name);
+                    printf("SUB %s %s\n",retreg->name,lreg->name);
+                    printf("MOV [%d] %s\n",addr,retreg->name);
+                    if(keep==0){
+                        returnReg(retreg);
+                    }
+                    returnReg(lreg);
+                }
+                break;
+                break;
+            case ADDSUB:
+            case MULDIV:
+            case AND:
+            case OR:
+            case XOR:
+                lreg=codeGen(root->left,1);
+                rreg=codeGen(root->right,1);
+                if (strcmp(root->lexeme, "+") == 0) {
+                    printf("ADD %s %s\n",lreg->name,rreg->name);
+                } else if (strcmp(root->lexeme, "-") == 0) {
+                    printf("SUB %s %s\n",lreg->name,rreg->name);
+                } else if (strcmp(root->lexeme, "*") == 0) {
+                    printf("MUL %s %s\n",lreg->name,rreg->name);
+                } else if (strcmp(root->lexeme, "/") == 0) {
+                    if (!containsVariable(root->right)&& evaluateTree(root->right) == 0){
+                        err(DIVZERO);
+                    }
+                    printf("DIV %s %s\n",lreg->name,rreg->name);
+                } else if(strcmp(root->lexeme,"&")==0){
+                    printf("AND %s %s\n",lreg->name,rreg->name);
+                }else if(strcmp(root->lexeme,"|")==0){
+                    printf("OR %s %s\n",lreg->name,rreg->name);
+                }else if(strcmp(root->lexeme,"^")==0){
+                    printf("XOR %s %s\n",lreg->name,rreg->name);
+                }
+                returnReg(rreg);
+                retreg = lreg;
+                break;
+
+            default:
+                break;
         }
-    } else if (match(ADDSUB)) {
-        retp = makeNode(ADDSUB, getLexeme()); retp->left = makeNode(INT, "0"); advance();
-        if (match(INT)) {
-            retp->right = makeNode(INT, getLexeme()); advance();
-        } else if (match(ID)) {
-            retp->right = makeNode(ID, getLexeme()); advance();
-        } else if (match(LPAREN)) {
-            advance(); retp->right = expr(); if (match(RPAREN)) advance(); else err(MISPAREN);
-        } else err(NOTNUMID);
-    } else if (match(LPAREN)) {
-        advance(); retp = expr(); if (match(RPAREN)) advance(); else err(MISPAREN);
-    } else err(NOTNUMID);
-
-    return retp;
-}
-
-BTNode *term(void) {
-    return term_tail(factor());
-}
-
-BTNode *term_tail(BTNode *left) {
-    BTNode *node;
-    if (match(MULDIV)) {
-        node = makeNode(MULDIV, getLexeme()); advance();
-        node->left = left; node->right = factor();
-        return term_tail(node);
     }
-    return left;
+    return retreg;
 }
 
-BTNode *expr(void) {
-    return expr_tail(term());
-}
-
-BTNode *expr_tail(BTNode *left) {
-    BTNode *node;
-    if (match(ADDSUB)) {
-        node = makeNode(ADDSUB, getLexeme()); advance();
-        node->left = left; node->right = term();
-        return expr_tail(node);
-    } else if (match(ANDORXOR)) {
-        node = makeNode(ANDORXOR, getLexeme()); advance();
-        node->left = left; node->right = term();
-        return expr_tail(node);
+int r0, r1, r2;
+void store_xyz() {
+    // x, y, z 分別存到 r0, r1, r2
+    printf("MOV r0 [0]\n");
+    printf("MOV r1 [4]\n");
+    printf("MOV r2 [8]\n");
+    r0 = table[0].val; // x
+    r1 = table[1].val; // y
+    r2 = table[2].val; // z
+    //printf("x:%d y:%d z:%d\n", r0, r1, r2);
+    /*for (int i = 0; i < sbcount - 1; i++) {
+        printf("%s: %d, ", table[i].name, table[i].val);
     }
-    return left;
-}
-
-void statement(void) {
-    BTNode *retp;
-    if (match(ENDFILE)) exit(0);
-    else if (match(END)) {
-        printf(">> "); advance();
-    } else {
-        retp = expr();
-        if (match(END)) {
-            printf("%d\n", evaluateTree(retp));
-            printf("Prefix traversal: "); printPrefix(retp); printf("\n");
-            freeTree(retp);
-            printf(">> "); advance();
-        } else err(SYNTAXERR);
-    }
+    printf("%s: %d\n", table[sbcount-1].name, table[sbcount-1].val);*/
 }
 
 int main() {
+    //freopen("input.txt", "w", stdout);
     initTable();
-    printf(">> ");
-    while (1) statement();
+    initReg();
+    advance();
+    BTNode *root;
+    regCount = 0;
+    while (!match(ENDFILE)) {
+        if (match(END)) { advance(); continue; }
+        root = assign_expr();
+        if (!match(END) && !match(ENDFILE)) err(SYNTAXERR);
+        codeGen(root, 1);
+        evaluateTree(root);
+        /*printf("Prefix traversal: ");
+        printPrefix(root);
+        printf("\n");
+        for (int i = 0; i < sbcount - 1; i++) {
+            printf("%s: %d, ", table[i].name, table[i].val);
+        }
+        printf("%s: %d\n", table[sbcount-1].name, table[sbcount-1].val);
+        */
+        freeTree(root);
+        advance();
+    }
+    store_xyz();
+    printf("EXIT 0\n");
     return 0;
 }

@@ -498,7 +498,7 @@ main
 //		   	      ADDSUB LPAREN expr RPAREN
 
 int main() {
-    initTable();
+    init();
     printf(">> ");
     while (1) {
         statement();
