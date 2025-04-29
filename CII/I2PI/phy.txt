@@ -1,0 +1,87 @@
+跳至主內容
+區塊跳過測驗導覽區塊
+測驗導覽
+完成作答...
+連結與操作支援
+20
+正體中文 ‎(zh_tw)‎
+謝育声謝 
+LOGO
+11320PHYS 114301-07 ...
+首頁
+儀表板
+課程
+本課程
+工具
+ 標準
+我的課程
+理學院 (SCI)
+物理系 (PHYS)
+11320PHYS 114301-07 [元課程]普通物理B
+Homework for the second exam
+chapter 27
+試題1
+可作答次數：3
+配分1.00
+標示試題
+試題文字內容
+27.13
+
+A conducting loop of area 272 cm2 and resistance 10 Ω is perpendicular to a spatially uniform magnetic field and carries a 346-mA induced current. At what rate (T/s) is the magnetic field changing?
+答案：試題1
+試題2
+可作答次數：3
+配分1.00
+標示試題
+試題文字內容
+27.19
+
+What inductance (mH) should you put in series with a 90-Ω resistor to give a time constant of 2.1 ms? (In unit mH)
+答案：試題2
+試題3
+可作答次數：3
+配分1.00
+標示試題
+試題文字內容
+27.21
+How much energy (kJ) is stored in a 4.7-H inductor carrying 34 A?
+
+答案：試題3
+試題4
+可作答次數：3
+配分1.00
+標示試題
+試題文字內容
+27.20
+The current in a series RL circuit increases to 66.5 % of its final value in 4.3 µs. If L =1.7 mH, what's the resistance (unit: Ω)?
+
+答案：試題4
+試題5
+可作答次數：3
+配分1.00
+標示試題
+試題文字內容
+27.37
+
+A conducting loop with area 0.13 m2 and resistance 5.8 Ω lies in the x-y plane. A spatially uniform magnetic field points in the z-direction. The field varies with time according to Bz=a*t2-b, where a=2.1 T/s2 and b=6.2 T. Find the absolute value of loop current (A) at t=3 s.
+答案：試題5
+試題6
+可作答次數：3
+配分1.00
+標示試題
+試題文字內容
+27.61
+In the figure, the voltage ε0 = 18 V ,R1= 6 ohm, R2 = 9 ohm , and R3= 5 ohm. Find current I3 after the switch is closed a long time later. (in unit A)
+27.40
+答案：試題6
+ 
+
+本網站僅作學術研究用途，不得從事商業用途，請尊重智慧財產權，
+
+避免任何侵權行為，勿上傳/下載未經授權之檔案資料，並依授權規範合理使用。
+
+Please respect the intellectual property rights.
+
+ 
+
+Policies

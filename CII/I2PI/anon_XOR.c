@@ -9,7 +9,7 @@ int main () {
         int unique = 0;
         for (int i = 0; i < n; i++) {
             scanf("%d", &temp);
-            unique = temp ^= unique;
+            unique ^= temp;
         }
         printf("%d\n", unique);
     }

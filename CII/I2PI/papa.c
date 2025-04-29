@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stdio.h>
-#include <string.h>
-
 int cmp(const char *a, const char *b) {
     int la = strlen(a);
     if (la % 2 == 1) {
