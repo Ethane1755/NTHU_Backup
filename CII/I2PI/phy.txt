@@ -1,90 +1,277 @@
-跳至主內容
-區塊跳過測驗導覽區塊
-測驗導覽
-完成作答...
-連結與操作支援
-21
-正體中文 ‎(zh_tw)‎
-謝育声謝 
-LOGO
-11320PHYS 114301-07 ...
-首頁
-儀表板
-課程
-本課程
-工具
- 標準
-我的課程
-理學院 (SCI)
-物理系 (PHYS)
-11320PHYS 114301-07 [元課程]普通物理B
-Homework for the second exam
-chapter 28
-試題1
-可作答次數：3
-配分1.00
-標示試題
-試題文字內容
-28.19
-A 7.8-mH inductor is connected across a 9.8-V rms AC generator, and a 4.7-mA rms current flows. What is the generator frequency? (in kHz) 
-
-答案：試題1
-試題2
-可作答次數：3
-配分1.00
-標示試題
-試題文字內容
-28.23
-An LC circuit with a 2.7-µF capacitor oscillates with period 1.4 ms. Find the inductance in unit mH.
-
-答案：試題2
-試題3
-可作答次數：3
-配分1.00
-標示試題
-試題文字內容
-28.26
-A series RLC circuit has R= 18 kΩ, C= 7.1 µF, and L = 6.0 H. At what frequency is its impedance lowest? (in unit Hz)
-
-答案：試題3
-試題4
-可作答次數：3
-配分1.00
-標示試題
-試題文字內容
-28.31
-For safety, medical equipment connected to patients is often powered by an isolation transformer, whose primary is connected to 6.2-V AC power and whose secondary delivers 3.6-V power. What's the turns ratio of such a transformer? (ratio = secondary turns/primary turns)
-
-答案：試題4
-試題5
-可作答次數：3
-配分1.00
-標示試題
-試題文字內容
-28.45(a)
-
-A 4.1-nF capacitor and one unknown capacitor are in parallel across a 12.2-V rms sine-wave generator. At 1.0 kHz, the generator supplies a total current of 7.5 mA rms. Find the capacitance of the unknown capacitor. (unit: nF) 
-
-
-答案：試題5
-試題6
-可作答次數：3
-配分1.00
-標示試題
-試題文字內容
-28.58
-
-A series RLC circuit has power factor of 0.17 and total impedance 57.6 Ω at 10 kHz. What is the resistance of the resistor? (in ohm)
-
-答案：試題6
- 
-
-本網站僅作學術研究用途，不得從事商業用途，請尊重智慧財產權，
-
-避免任何侵權行為，勿上傳/下載未經授權之檔案資料，並依授權規範合理使用。
-
-Please respect the intellectual property rights.
-
- 
-
-Policies
+Spring 2022 Second Midterm Exam of General Physics B
+[Wolfson Ch. 25-28] 2022/05/03, 8:20am – 09:50am
+(i) For part I: just fill in the answer, for part II: you need to write down the procedures.
+(ii) Write all the answers to the fill-in questions on the front of the second sheet in the order of
+the blank numbers. Do not write the calculation process.
+(iii) Write down the calculation process and answer in the order of the number of the problems after the
+second back, starting from a new page for each problem.
+(iv) Please note the expression your answer in significant figures.
+Useful constant: μ0 = 4π × 10-7 T ∙ m/A, g = 9.81 m/s2
+Part I. Filling the blank (5 points per blank)
+• A circular coil of wire of 200 turns and diameter 2.0 cm carries a current of 4.0 A. It is placed in a magnetic
+field of with the plane of the coil making an angle of 30° with the magnetic
+field. What is the magnetic torque on the coil? 【01】
+• A light bulb is connected in the circuit shown in the right figures
+with the switch S open and the capacitor uncharged. The battery has
+no appreciable internal resistance. Which one of the following
+curves (1-5) best describes the brightness B of the bulb as a function
+of time t after closing the switch? 【02】
+• A thin copper rod that is 1.0 m long and has a mass of 0.050 kg is in a magnetic field of 0.10 T. What minimum
+current in the rod is needed in order for the magnetic force to cancel the weight of the rod? 【03】
+• At what distance from the central axis of a long straight thin wire carrying a current of 5.0 A is the magnitude
+of the magnetic field due to the wire equal to the strength of the Earth's magnetic field of about 5.0 × 10-5 T?
+【04】
+• For the circuit shown in the right figure, all quantities are accurate to 3 significant figures. What
+is the power dissipated in the 2-Ω resistor? 【05】
+• For the circuit shown in the right figure, determine the current in (a) the 7.0-Ω resistor【06】,
+(b) the 4.0-Ω resistor 【07】.
+•The square coil has sides l = 0.50m long and is tightly wound with N = 400 turns of wire. The resistance of the
+coil is R = 8.0Ω. The coil is placed in a spatially uniform magnetic field that is directed perpendicular to the face
+of the coil. If the magnetic field decreases uniformly from 1.8 T to 1.6 T in 5.0 s, what is the magnitude of the
+current circulating through the coil? 【08】
+• The pedals of the bicycle are attached to a 200 turn coil of area 0.100 m2. The coil rotates at half a revolution
+per second and it is placed in a uniform magnetic field of 0.0100 T perpendicular to the axis of rotation of the
+coil. What is the maximum voltage generated in the coil? 【9】
+1
+• A solenoid is wound with 970 turns on a form 4.0 cm in diameter and 50 cm long.
+The windings carry a current I in the sense that is shown in the figure. The current
+produces a magnetic field, of magnitude near the center of the solenoid.
+Find the current in the solenoid windings. 【10】
+• In the figure on the right, assume that R = 8.0 Ω, d = 1.8 m, and a uniform
+1.5 T magnetic field is directed into the page. At what speed should the bar
+be moved to produce 0.80 A in the resistor? 【11】
+• A transformer on a utility pole steps the rms voltage down from 11 kV to 220 V. If the output current to the
+transformer is 100 A, what is the input current? 【12】
+• The magnetic field shown right is confined to the cylindrical region shown and is
+⃗
+changing with time. Identify those paths for which ε = ∮𝐸
+⃗
+∙ 𝑑ℓ
+≠ 0. 【13】
+• An ac generator whose emf is given by:  (t) = (7.00 V) sin [(2.00  104 rad/s) t] is
+connected to an RLC circuit for which L = 3.00  10-3 H, C = 5.00  10-6 F, and R = 6.00 . What is the
+impedance of the circuit? 【14】
+• A series RLC circuit has power factor 0.710 and impedance 196 at 221 Hz. What’s the resistance? 【15】
+Part II Problems (10 points per problem)
+【1】 An electron enters a magnetic field of with a velocity perpendicular to the direction of the field.
+At what frequency does the electron traverse a circular path? (mel = 9.11 × 10-31 kg, e = 1.60 × 10-19 C) (Formula
+derivation: 5%. Answer calculation: 5%.)
+【2】 Current flows to the midrange speaker in a loudspeaker system through a 4.4-mH inductor in series with
+a capacitor.
+(a). What should the capacitance be so that a given voltage produces the greatest current at 2 kHz ?
+(b). If the same voltage produces one-third this current at 309 Hz, what is the speaker’s resistance ?
+(c). If the peak output voltage of the amplifier is 40 V, what will be the peak capacitor voltage be at 2 kHz ?
+(d). The peak voltage across the capacitor is a maximum at a somewhat lower frequence. Find that frequency and
+(e). the corresponding peak voltage.
+【3】In the circuit of right figure, let  = 3.0V, R = 5.0, and L = 5.0H.
+(a) What is the time constant of the circuit?
+(b) What are the current at t = 0, (c) at t = 3.0 L, and (d) as t → ?
+2
+Part I Answer Sheet，
+A【01】 0.15 N ∙ m
+A【02】 2
+A【03】 4.9 A
+A【04】 2.0 cm
+A【05】 3.56 W (3.555555555 W)
+A【06】 1.6 A (1.551724 A)
+A【07】 0.28 A (0.2844 A)
+A【08】 0.50 A (wrong sign -0.5 points)
+A【09】 0.628 V (0.6283185 V)
+A【10】 1.8 A (1.76 A)
+A【11】 2.4 m/s
+A【12】 2A
+A【13】 P1, P2, P4
+A【14】 50.4
+A【15】 139
+【08】 The flux through one turn is ΦB = BA = Bl2
+, so we can calculate the magnitude of the emf from
+Faraday’s law. Lenz’s law: | | =∣−NdΦB/dt∣= Nl2dB/dt = (400)(0.50m)2[(1.8-1.6)/(5.0) (T/s)] =
+(400)(0.50m)2(0.040T/s) = 4.0V. The magnitude of the current induced in the coil is I = | | / R = 4.0V / 8.0Ω =
+0.50A.
+【09】 Here f = 0.5 Hz; N =200, A = 0.100 m2 and B = 0.0100 T. × 2 × 3.14 × 0.500 = 0.628 V. The maximum voltage is 0.628 V.
+ε = NBA (2 π f) = 200 × 0.0100 × 0.100
+【11】 Reasoning: The rate at which the flux changes is dΦB/dt = B*d*dL/dt = B*d*v, since the only thing
+changing is the length of the circuit, and ΔL/∆t = v. The current flowing in the circuit will be I = vBd/R.
+Details of the calculation:
+I = vBd/R. Therefore v = IR/(Bd) = 0.80 A*8.0 Ω/(1.5 T*1.8 m) = 2.4 m/s.
+【12】 Ns/Np
+=Vs/Vp=220V/11000V=1/50, Power=IpVp=IsVs, Ip=Is(Vs/Vp)=100A/50=2A
+【14】 The impedance of the circuit is
+Z=R2+(XL-XC)2
+=(6.00)2+[(2.00104rad/s)(3.0010-3H)-1/(2.00104rad/s)(5.0010-6F)]2
+=50.4
+【15】 cos∅ =
+𝑉𝑅𝑝
+𝐼𝑝𝑅
+=
+=
+𝑉𝑝
+𝐼𝑝𝑍
+𝑅
+𝑍 , 𝑅 = 𝑍cos∅ = (196Ω)(0.710) = 139.16= 139
+3
+Part II Answer Sheet，
+A1
+Derivation 5%:
+FB=qvB=mv2/r=Fc => r=mv/qB => T=2πr/v=2πm/qB => f=qB/2πm
+Answer 5%:
+f= 1.60 × 10-19 C * 0.75T/2π/9.11 × 10-31 kg=2.1 × 1010 Hz
+A2
+(a). 1.4𝜇𝐹 (b). 120Ω (c). 18 𝑉 (d). 1900𝐻𝑧 (e). 19 𝑉
+(a). Greatest I is at resonance:
+2 =
+𝜔0
+1
+𝐿𝐶
+1
+𝐶 =
+2
+𝐿𝜔0
+=
+(4.4×10−3𝐻)(4𝜋×103𝐻𝑧)2
+1
+= 1.44 × 10−6𝐹 = 1.4𝜇𝐹
+, At resonance: |𝑍| = 𝑅,
+(b). 𝑉 𝑝 = 𝐼𝑝 |𝑍|, |𝑍| = √ 𝑅2 + (𝜔 𝐿 −
+1
+𝜔 𝐶)2
+𝐼𝑝
+3 |𝑍| = 𝐼𝑝 𝑅, √ 𝑅2 + (𝜔 𝐿 −
+1
+𝜔 𝐶)2
+= 3𝑅, 𝑅2 + (𝜔 𝐿 −
+1
+𝜔 𝐶)2
+= 9𝑅2
+, (𝜔 𝐿 −
+1
+𝜔 𝐶)2
+= 8𝑅2
+,
+𝑅 =
+1
+2√2|𝜔 𝐿 −
+1
+𝜔 𝐶| =
+1
+2√2|(2𝜋 × 309 𝐻𝑧) (4.4 × 10−3𝐻) −
+= 123.46Ω = 120Ω
+1
+(2𝜋 × 309 𝐻𝑧) (1.44 × 10−6𝐹)|
+(c). Peak voltage is at resonance (2 kHz). 𝑉𝐶𝑝 = 𝐼𝑝 𝑋𝐶 =
+𝑉 𝑝
+𝑅
+1
+=
+𝜔 𝐶
+40 𝑉
+123.46 𝛺
+= 17.91 𝑉 = 18 𝑉
+(4𝜋 × 103 𝐻𝑧) (1.44 × 10−6 𝐹)
+(d). We are given the component values L=4.4 mH, C=1.44 F and R=17.91. The peak voltage is Vp=40V. The
+peak voltage across the capacitor will be VCp=IpXC, where Ip=Vp/Z and XC=1/(C). We want to find the
+maximum value of VCp and the frequency at which it occurs.
+𝑉 𝑝 = 𝐼𝑝 𝑅
+1
+𝑉𝐶𝑝
+= 𝐼𝑝𝑋𝐶 =
+𝑉 𝑝
+|𝑍|𝑋𝐶 =
+𝑉 𝑝
+1
+𝜔𝐶
+[
+√ 𝑅2 + (𝜔 𝐿 −
+1
+𝜔 𝐶)2
+]
+so we set the derivative equal to zero and solve for :
+2
+𝑑𝜔
+𝑑𝑉𝐶𝑝
+= 0 = −
+𝑉 𝑝[𝐶𝑅2 + 2𝐿(𝐶𝐿𝜔2
+− 1)]
+{1 + 𝐶𝜔2[𝐶𝑅2 + 𝐿(𝐶𝐿𝜔2 − 2)]}√𝑅2 + [𝐿𝜔 −
+1
+𝜔𝐶]2
+⇒ 0 = 𝐶𝑅2 + 2𝐿(𝐶𝐿𝜔2
+− 1), ⇒ 𝐶𝑅2 + 2𝐶𝐿2𝜔2
+− 2𝐿 = 0, ⇒ 𝜔2 =
+2𝐿
+2𝐶𝐿2−
+𝐶𝑅2
+2𝐶𝐿2
+1
+=
+𝑅2
+2𝐿2 ⇒ 𝜔 = √ 1
+𝐿𝐶
+−
+𝑅2
+2𝐿2
+ω
+𝑓 =
+=
+12228.82𝑟𝑎𝑑 𝑠 ⁄
+= 1946𝐻𝑧 = 1900𝐻𝑧, to two significant figures.
+2×3.14159𝑟𝑎𝑑
+−
+𝐿𝐶
+⇒ 2𝐶𝐿2𝜔2 = 2𝐿 − 𝐶𝑅2
+,
+= √ 1
+−
+(4.4𝑚𝐻)(1.44𝜇𝐹)
+(17.91Ω)2
+2(4.4𝑚𝐻)2
+= 12228.82𝑟𝑎𝑑 𝑠 ⁄
+2𝜋
+(e). We substitute this value of =2f into the equation for VCp to fund the peak voltage across the capacitor.
+𝑉 𝑝
+1
+40 𝑉
+𝑉𝐶𝑝 = 𝐼𝑝 𝑋𝐶 =
+=
+𝜔 𝐶
+123.46 𝛺
+1
+𝑅
+(2𝜋 × 1900 𝐻𝑧) (1.44 × 10−6 𝐹)
+= 18.86 𝑉 = 19 𝑉
+A3
+(a). 1.0𝑠 (b). 0 (c). 0.57A (d). 0.60A
+(a). The inductive time constant is 𝜏𝐿 =
+L
+R
+=
+5.0𝐻
+5.0Ω
+= 1.0𝑠
+(b). The current in the circuit of right figure increases according of equation:
+𝑰 =
+𝜺
+𝑹(𝟏 − 𝒆−𝒕 (𝑳 𝑹 ⁄ )
+⁄ ) =
+𝜺
+𝑹(𝟏 − 𝒆−𝒕 𝝉𝑳
+⁄ )
+𝜺
+𝑹(𝟏 − 𝒆−𝒕 𝝉𝑳
+⁄ ) = (𝟏 − 𝟏) = 𝟎
+At t = 0, (c). At t = 3.0 L,
+𝑰(𝒕 = 𝟑.𝟎𝝉𝑳) =
+𝜺
+𝑹(𝟏 − 𝒆−𝟑.𝟎𝝉𝑳 𝝉𝑳
+⁄ ) =
+(d). and
+𝑰(𝒕 → ∞) =
+𝟑.𝟎𝑽
+𝟓.𝟎𝛀(𝟏 − 𝟎) = 𝟎.𝟔𝟎𝑨
+; so I(0) = 0.
+𝟑.𝟎𝑽
+𝟓.𝟎𝛀(𝟏 − 𝒆−𝟑.𝟎) = (𝟎.𝟔𝟎𝑨)(𝟎.𝟗𝟓𝟎𝟐) = 𝟎.𝟓𝟕𝑨
+𝜺
+𝑹(𝟏 − 𝒆−∞ 𝝉𝑳
+⁄ ) =
+3
