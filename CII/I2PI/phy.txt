@@ -3,7 +3,7 @@
 測驗導覽
 完成作答...
 連結與操作支援
-20
+21
 正體中文 ‎(zh_tw)‎
 謝育声謝 
 LOGO
@@ -19,32 +19,32 @@ LOGO
 物理系 (PHYS)
 11320PHYS 114301-07 [元課程]普通物理B
 Homework for the second exam
-chapter 27
+chapter 28
 試題1
 可作答次數：3
 配分1.00
 標示試題
 試題文字內容
-27.13
+28.19
+A 7.8-mH inductor is connected across a 9.8-V rms AC generator, and a 4.7-mA rms current flows. What is the generator frequency? (in kHz) 
 
-A conducting loop of area 272 cm2 and resistance 10 Ω is perpendicular to a spatially uniform magnetic field and carries a 346-mA induced current. At what rate (T/s) is the magnetic field changing?
 答案：試題1
 試題2
 可作答次數：3
 配分1.00
 標示試題
 試題文字內容
-27.19
+28.23
+An LC circuit with a 2.7-µF capacitor oscillates with period 1.4 ms. Find the inductance in unit mH.
 
-What inductance (mH) should you put in series with a 90-Ω resistor to give a time constant of 2.1 ms? (In unit mH)
 答案：試題2
 試題3
 可作答次數：3
 配分1.00
 標示試題
 試題文字內容
-27.21
-How much energy (kJ) is stored in a 4.7-H inductor carrying 34 A?
+28.26
+A series RLC circuit has R= 18 kΩ, C= 7.1 µF, and L = 6.0 H. At what frequency is its impedance lowest? (in unit Hz)
 
 答案：試題3
 試題4
@@ -52,8 +52,8 @@ How much energy (kJ) is stored in a 4.7-H inductor carrying 34 A?
 配分1.00
 標示試題
 試題文字內容
-27.20
-The current in a series RL circuit increases to 66.5 % of its final value in 4.3 µs. If L =1.7 mH, what's the resistance (unit: Ω)?
+28.31
+For safety, medical equipment connected to patients is often powered by an isolation transformer, whose primary is connected to 6.2-V AC power and whose secondary delivers 3.6-V power. What's the turns ratio of such a transformer? (ratio = secondary turns/primary turns)
 
 答案：試題4
 試題5
@@ -61,18 +61,21 @@ The current in a series RL circuit increases to 66.5 % of its final value in 4.3
 配分1.00
 標示試題
 試題文字內容
-27.37
+28.45(a)
 
-A conducting loop with area 0.13 m2 and resistance 5.8 Ω lies in the x-y plane. A spatially uniform magnetic field points in the z-direction. The field varies with time according to Bz=a*t2-b, where a=2.1 T/s2 and b=6.2 T. Find the absolute value of loop current (A) at t=3 s.
+A 4.1-nF capacitor and one unknown capacitor are in parallel across a 12.2-V rms sine-wave generator. At 1.0 kHz, the generator supplies a total current of 7.5 mA rms. Find the capacitance of the unknown capacitor. (unit: nF) 
+
+
 答案：試題5
 試題6
 可作答次數：3
 配分1.00
 標示試題
 試題文字內容
-27.61
-In the figure, the voltage ε0 = 18 V ,R1= 6 ohm, R2 = 9 ohm , and R3= 5 ohm. Find current I3 after the switch is closed a long time later. (in unit A)
-27.40
+28.58
+
+A series RLC circuit has power factor of 0.17 and total impedance 57.6 Ω at 10 kHz. What is the resistance of the resistor? (in ohm)
+
 答案：試題6
  
 

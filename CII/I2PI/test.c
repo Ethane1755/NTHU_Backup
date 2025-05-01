@@ -1,31 +1,30 @@
 #include <stdio.h>
 
-int N, cnt = 0;
-int table[15];
-
-int safe(int row, int col) {
-    for (int i = 0; i < row; i++) {
-        if (col == table[i] || (col - table[i]) == (row - i) || (col - table[i]) == (i - row)) return 0;
+int maxBit (int x) {
+    int temp = 0;
+    while (x > 1) {
+        x /= 2;
+        temp++;
     }
-    return 1;
-}
-
-void dfs(int row) {
-    if (row == N) {
-        cnt++;
-        return;
-    }
-    for (int i = 0; i < N; i++) {
-        if (safe(row, i)) {
-            table[row] = i;
-            dfs(row + 1);
-        }
-    }
+    return temp;
 }
 
 int main () {
+    int N, m, x;
     scanf("%d", &N);
-    dfs(0);
-    printf("%d\n", cnt);
+    while (N--) {
+        int ans = 0;
+        int bit[32] = {0};
+        scanf("%d", &m);
+        for (int i = 0; i < m; i++) {
+            scanf("%d", &x);
+            bit[maxBit(x)]++;
+        }
+        for (int i = 0; i < 32; i++) {
+            ans += bit[i] * (bit[i] - 1) / 2;
+        }
+        printf("%d\n", ans);
+    }
+
     return 0;
 }

@@ -137,7 +137,7 @@ TokenSet getToken(void) {
         ungetc(c, stdin);
         lexeme[i] = '\0';
         return INT;
-    } else if (isalpha(c)) {
+    } else if (isalpha(c) || c == '_') {
         i = 0;
         while ((isalnum(c) || c == '_') && i < MAXLEN - 1) {
             lexeme[i++] = c;
@@ -210,21 +210,24 @@ BTNode *factor(void);
 
 BTNode *assign_expr(void) {
     BTNode *node;
-    allow_undeclared_id = 1;  // 允許 assign 左值自動宣告
+    
+    allow_undeclared_id = 1;  // 允許新的 ID，因為左邊可能是新變數
     node = or_expr();
-    allow_undeclared_id = 0;
+    allow_undeclared_id = 0;  // 之後恢復原狀
     if (node->data == ID ) {
         if (match(ASSIGN)) {
             char id[MAXLEN];
-            strcpy(id, node->lexeme);
-            free(node);
+            strcpy(id, node->lexeme); // 儲存變數名稱
+            //printf("%s\n", id);
+            free(node); // 先釋放掉舊的節點
             advance();
-            addVar(id); // 只在 assign 左值時宣告
+            addVar(id); // 宣告變數
             BTNode *assignNode = makeNode(ASSIGN, "=");
             assignNode->left = makeNode(ID, id);
-            assignNode->right = assign_expr(); // 右結合
+            assignNode->right = assign_expr(); // 注意是 assign_expr (右結合)
             return assignNode;
         }
+    
         if (match(ADDSUB_ASSIGN)) {
             char id[MAXLEN];
             strcpy(id, node->lexeme);
@@ -232,10 +235,10 @@ BTNode *assign_expr(void) {
             char op[MAXLEN];
             strcpy(op, getLexeme());
             advance();
-            if (lookup(id) == -1) err(NOTFOUND); // +=, -= 左值必須已宣告
+            if (lookup(id) == -1) err(NOTFOUND);
             BTNode *assignNode = makeNode(ADDSUB_ASSIGN, op);
             assignNode->left = makeNode(ID, id);
-            assignNode->right = assign_expr();
+            assignNode->right = assign_expr(); // += 是右邊只吃表達式
             return assignNode;
         }
     }
@@ -348,12 +351,11 @@ BTNode *factor(void) {
     } else if (match(ID)) {
         char id[MAXLEN];
         strcpy(id, getLexeme());
-        // 僅允許 assign_expr 左值時自動宣告
         if (lookup(id) == -1) {
             if (allow_undeclared_id) {
-                addVar(id);  // assign_expr 左值時允許
+                addVar(id);  // 如果允許，就幫他加進 symbol table
             } else {
-                err(NOTFOUND); // 右值遇到未宣告變數直接 EXIT 1
+                err(NOTFOUND);
             }
         }
         advance();
@@ -432,7 +434,7 @@ int evaluateTree(BTNode *root) {
                 } else if (strcmp(root->lexeme, "*") == 0) {
                     retval = lv * rv;
                 } else if (strcmp(root->lexeme, "/") == 0) {
-                    if (rv == 0) retval = 0;
+                    if (rv == 0) retval = 1;
                     else retval = lv / rv;
                 } else if (strcmp(root->lexeme, "&") == 0) {
                     retval = lv & rv;
@@ -566,7 +568,7 @@ Register *codeGen(BTNode *root,int keep){
                 } else if (strcmp(root->lexeme, "/") == 0) {
                     if (!containsVariable(root->right)&& evaluateTree(root->right) == 0){
                         err(DIVZERO);
-                    }
+                    } 
                     printf("DIV %s %s\n",lreg->name,rreg->name);
                 } else if(strcmp(root->lexeme,"&")==0){
                     printf("AND %s %s\n",lreg->name,rreg->name);
@@ -575,7 +577,7 @@ Register *codeGen(BTNode *root,int keep){
                 }else if(strcmp(root->lexeme,"^")==0){
                     printf("XOR %s %s\n",lreg->name,rreg->name);
                 }
-                returnReg(rreg);
+                //returnReg(rreg);
                 retreg = lreg;
                 break;
 
@@ -586,7 +588,7 @@ Register *codeGen(BTNode *root,int keep){
     return retreg;
 }
 
-int r0, r1, r2;
+int r0, r1, r2 = 0;
 void store_xyz() {
     // x, y, z 分別存到 r0, r1, r2
     printf("MOV r0 [0]\n");
@@ -610,19 +612,22 @@ int main() {
     BTNode *root;
     regCount = 0;
     while (!match(ENDFILE)) {
+        for(int i = 0; i < 8; i++) {
+            reg[i].occupy = 0;
+        }
         if (match(END)) { advance(); continue; }
         root = assign_expr();
         if (!match(END) && !match(ENDFILE)) err(SYNTAXERR);
         codeGen(root, 1);
         evaluateTree(root);
-        printf("Prefix traversal: ");
+        /*printf("Prefix traversal: ");
         printPrefix(root);
         printf("\n");
         for (int i = 0; i < sbcount - 1; i++) {
             printf("%s: %d, ", table[i].name, table[i].val);
         }
         printf("%s: %d\n", table[sbcount-1].name, table[sbcount-1].val);
-        
+        */
         freeTree(root);
         advance();
     }
