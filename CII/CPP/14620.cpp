@@ -174,7 +174,7 @@ class GameMap {
             // TODO-04:
             // Make Pacman eat the dot at his current position (if there is one).
             if (dot[p.x][p.y]) {
-                grid[p.x][p.y] = ' ';
+                grid[p.x][p.y] = '.';
                 dot[p.x][p.y] = 0;
             }
         }
@@ -195,7 +195,7 @@ int main() {
         if (grid[i][j]=='G') ghost_start = {i,j};
     }
 
-    unsigned GHOST_SEED = 17 ;
+    unsigned GHOST_SEED = 48763 ;
     // Choose any integer you like as a random seed! It will affect how the ghosts move.
     // Note: make sure the number you pick fits within the range of an unsigned integer (0 to 4,294,967,295),
     // or unexpected results may happen.

@@ -79,7 +79,7 @@ Codec* getCodec(const std::string& type, const std::string& is) {
     } else if (type == "RLE") {
         return new RleCodec(is);
     }
-    return nullptr;
+    //return nullptr;
 }
 
 #endif
