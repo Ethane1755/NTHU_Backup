@@ -3,12 +3,8 @@
 
 using namespace std;
 
-Animal::Animal(Zoo *zoo, string name) {
-  this -> belong = zoo;
-  this -> species = name;
-  if (this -> belong != NULL) {
-    this -> belong -> born(this -> species);
-  }
+Animal::Animal(Zoo *zoo, string name): belong(zoo), species(name) {
+  this -> belong -> born(this -> species);
 }
 Dog::Dog(Zoo *zoo) : Animal(zoo, "Dog") {}
 Cat::Cat(Zoo *zoo) : Animal(zoo, "Cat") {}
