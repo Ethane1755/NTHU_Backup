@@ -48,7 +48,7 @@ class Pacman : public Entity {
         
             Position target = pos;
             int minStep = INT_MAX;
-        
+            
             while (!q.empty()) {
                 Position cur = q.front(); q.pop();
                 // 如果是豆子且比目前找到的更近

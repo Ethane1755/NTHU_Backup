@@ -1,7 +1,6 @@
 {
     "files.associations": {
         "iostream": "cpp",
-        "typeinfo": "cpp",
         "__bit_reference": "cpp",
         "__hash_table": "cpp",
         "__locale": "cpp",
@@ -38,19 +37,17 @@
         "print": "cpp",
         "queue": "cpp",
         "ratio": "cpp",
+        "sstream": "cpp",
         "stack": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "string": "cpp",
         "string_view": "cpp",
         "tuple": "cpp",
+        "typeinfo": "cpp",
         "unordered_map": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "__tree": "cpp",
-        "map": "cpp",
-        "sstream": "cpp",
-        "iomanip": "cpp",
         "algorithm": "cpp"
     }
 }
