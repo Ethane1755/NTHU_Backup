@@ -13,7 +13,7 @@ int decode(vector<int> a) {
 }
 
 struct cmp {
-    bool operator() (const vector<int> &a, const vector<int> &b) {
+    bool operator() (vector<int> a, vector<int> b) {
         return decode(a) < decode(b);
     }
 };
