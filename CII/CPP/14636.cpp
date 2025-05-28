@@ -34,13 +34,11 @@ int main () {
             ans[query] = 0;
             continue;
         }
-        // 預處理 prefix max
         vector<int> prefix_max(m, INT_MIN);
         prefix_max[0] = v[0];
         for (int j = 1; j < m; ++j) {
             prefix_max[j] = max(prefix_max[j-1], v[j]);
         }
-        // 預處理 suffix max
         vector<int> suffix_max(m, INT_MIN);
         suffix_max[m-1] = v[m-1];
         for (int j = m-2; j >= 0; --j) {
