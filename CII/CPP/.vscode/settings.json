@@ -54,7 +54,9 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "list": "cpp",
+        "unordered_set": "cpp"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/gcc"
 }

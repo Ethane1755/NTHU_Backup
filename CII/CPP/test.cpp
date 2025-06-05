@@ -1,62 +1,73 @@
 #include <iostream>
-#include <vector>
-#include <climits>
 #include <map>
-
+#include <set>
+#include <vector>
+#include <string>
 using namespace std;
 
-int main () {
-    int N, Q;
-    cin >> N;
-    vector<string> name(N);
-    vector<int> price(N);
-    for (int i = 0; i < N; i++) cin >> name[i];
-    for (int i = 0; i < N; i++) cin >> price[i];
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-    map<string, vector<int>> name_price;
-    for (int i = 0; i < N; i++) {
-        name_price[name[i]].push_back(price[i]);
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> sizes(n + 1); 
+    map<int, set<int>> available; 
+
+    for (int i = 1; i <= n; ++i) {
+        cin >> sizes[i];
+        available[sizes[i]].insert(i);
     }
 
-    map<string, int> ans;
+    while (m--) {
+        int type;
+        cin >> type;
 
-    cin >> Q;
-    for (int i = 0; i < Q; i++) {
-        string query;
-        cin >> query;
-        if (ans.count(query)) {
-            cout << ans[query] << endl;
-            continue;
-        }
+        if (type == 1) {
+            int car_size;
+            string pref;
+            cin >> car_size >> pref;
 
-        const vector<int>& v = name_price[query];
-        int m = v.size();
-        if (m < 3) {
-            cout << "0" << endl;
-            ans[query] = 0;
-            continue;
+            auto it = available.lower_bound(car_size); 
+            if (it == available.end()) {
+                cout << -1 << '\n';
+            } else {
+                int pos = -1;
+                if (!it->second.empty()) {
+                    if (pref == "small") {
+                        pos = *it->second.begin();
+                    } else {
+                        pos = *it->second.rbegin();
+                    }
+                    cout << pos << '\n';
+                    it->second.erase(pos);
+                    if (it->second.empty()) {
+                        available.erase(it);
+                    }
+                } else {
+                    cout << -1 << '\n';
+                }
+            }
         }
-
-        vector<int> prefix_max(m, INT_MIN);
-        prefix_max[0] = v[0];
-        for (int j = 1; j < m; ++j) {
-            prefix_max[j] = max(prefix_max[j-1], v[j]);
+        else if (type == 2) {
+            int y;
+            cin >> y;
+            if (y >= 1 && y <= n) {
+                int sz = sizes[y];
+                available[sz].insert(y);
+            }
         }
-        vector<int> suffix_max(m, INT_MIN);
-        suffix_max[m-1] = v[m-1];
-        for (int j = m-2; j >= 0; --j) {
-            suffix_max[j] = max(suffix_max[j+1], v[j]);
+        else if (type == 3) {
+            int z;
+            cin >> z;
+            if (available.count(z)) {
+                cout << available[z].size() << '\n';
+            } else {
+                cout << 0 << '\n';
+            }
         }
-
-        int best = INT_MIN;
-        for (int j = 1; j < m-1; ++j) {
-            int pu = prefix_max[j-1];
-            int pv = v[j];
-            int pw = suffix_max[j+1];
-            best = max(best, pu - pv + pw);
-        }
-        ans[query] = best;
-        cout << best << endl;
     }
+
     return 0;
 }
