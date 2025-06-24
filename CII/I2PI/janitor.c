@@ -1,32 +1,24 @@
 #include <stdio.h>
 
-int main() {
-    int num, N;
-    int a[100001];
-    int prefix[100001];
-    char b[20];
-    scanf("%d %d", &num, &N);
-    for (int i = 0; i < num; i++) {
-        scanf("%d", &a[i]);
-        for (int j = 0; j < 14; j++) {
-            scanf("%c", &b[j]);
+int main () {
+    int n, q;
+    unsigned long long temp;
+    unsigned long long prefix[1000005];
+    char trash[15];
+    prefix[0] = 0;
+    scanf("%d %d", &n, &q);
+    for (int i = 1; i <= n; i++) {
+        scanf("%llu", &temp);
+        prefix[i] = prefix[i - 1] + temp;
+        for (int j = 0; j < 13; j++) {
+            scanf("%c", &trash[j]);
         }
     }
-    prefix[0] = 0;
-    for (int i = 1; i <= num; i++) {
-        prefix[i] = prefix[i - 1] + a[i-1];
-        printf("%d ", prefix[i]);
+    for (int i = 0; i < q; i++) {
+        int start, end;
+        scanf("%d %d", &start, &end);
+        printf("%llu\n", prefix[end] - prefix[start - 1]);
     }
-    printf("\n");
-    while(N--) {
-        int l, r, ans;
-        scanf("%d %d", &l, &r);
-        //printf("%d %d\n", prefix[r], prefix[l-1]);
-        if (l != r) ans = prefix[r] - prefix[l-1];
-        else ans = a[l-1];
-        printf("%d\n", ans);
-    }
-
 
     return 0;
 }
