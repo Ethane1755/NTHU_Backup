@@ -1,7 +1,0 @@
-#!/bin/sh
-set -e
-if test "$CONFIGURATION" = "RelWithDebInfo"; then :
-  cd /Users/ethanehsieh/documents/CODE/allegro-test/build/tests
-  wine test_driver /Users/ethanehsieh/downloads/allegro/tests/test_bitmaps.ini /Users/ethanehsieh/downloads/allegro/tests/test_bitmaps2.ini /Users/ethanehsieh/downloads/allegro/tests/test_blend.ini /Users/ethanehsieh/downloads/allegro/tests/test_locking.ini /Users/ethanehsieh/downloads/allegro/tests/test_locking2.ini /Users/ethanehsieh/downloads/allegro/tests/test_backbuffer.ini /Users/ethanehsieh/downloads/allegro/tests/test_image.ini /Users/ethanehsieh/downloads/allegro/tests/test_fonts.ini /Users/ethanehsieh/downloads/allegro/tests/test_prim.ini /Users/ethanehsieh/downloads/allegro/tests/test_prim2.ini /Users/ethanehsieh/downloads/allegro/tests/test_convert.ini /Users/ethanehsieh/downloads/allegro/tests/test_ciede2000.ini
-fi
-

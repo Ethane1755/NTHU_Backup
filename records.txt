@@ -1,3 +1,0 @@
-3890
-salary 2024 3900
-transport bus -10
