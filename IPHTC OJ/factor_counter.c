@@ -26,7 +26,7 @@ int main () {
             printf("%d\n", l);
         } else {
             for (int j = l-1; j < r; j++) {
-                printf("%d %d %d\n", j+1, arr[j], temp);
+                //printf("%d %d %d\n", j+1, arr[j], temp);
                 if (arr[j] > temp) {
                     temp = arr[j];
                     ans = j+1;
