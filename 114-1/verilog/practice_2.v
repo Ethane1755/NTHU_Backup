@@ -6,6 +6,15 @@ module practice_2(
   output wire P,
   output wire Pn
 );
-  // Write your code here
-  
+  wire Dn, S, R, Qn, Q;
+
+  not (Dn, D);         
+  and (S, D, G);      
+  and (R, Dn, G);     
+  nor (Q, R, Qn);
+  nor (Qn, S, Q);  
+
+  assign Pn = Qn; 
+  assign P = Q;
+
 endmodule
