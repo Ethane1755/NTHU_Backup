@@ -16,7 +16,7 @@ wire y, out;
 // always#5 clk = ~clk;
 
 /* instatiate the module */
-mux_gate x1(
+mux x1(
     /* "." is used to associate the input and output ports 
        of the instantiated module with the corresponding signals */
     .a(a),
@@ -29,6 +29,13 @@ mux_gate x1(
 // TODO
 // Connect your practice_1 module here with "A", "B", "C", "out"
 // Please connect it by port name but not order
+
+practice_1 x2(
+    .A(A),
+    .B(B),
+    .C(C),
+    .out(out)
+);
 
 
 //====================================
