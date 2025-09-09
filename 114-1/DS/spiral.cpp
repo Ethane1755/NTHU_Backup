@@ -29,19 +29,21 @@ int main() {
             prefix[ind] = prefix[ind - 1] + arr[x][y];
             ind++;
             visited[x][y] = true;
-
+            
             if (step < N * M - 1) {
                 int nx = x + dx[dir];
                 int ny = y + dy[dir];
-
-                if (nx < 0 || nx >= N || ny < 0 || ny >= M || visited[nx][ny]) {
+                
+                if (nx >= 0 && nx < N && ny >= 0 && ny < M && !visited[nx][ny]) {
+                    x = nx;
+                    y = ny;
+                } else {
                     dir = (dir + 1) % 4;
-                    nx = x + dx[dir];
-                    ny = y + dy[dir];
+                    x += dx[dir];
+                    y += dy[dir];
                 }
-                x = nx;
-                y = ny;
             }
+            
         }
 
         while (Q--) {
